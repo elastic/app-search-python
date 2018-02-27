@@ -1,0 +1,2 @@
+requests==2.18.1
+PyJWT==1.5.3
