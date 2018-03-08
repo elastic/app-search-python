@@ -25,7 +25,7 @@ You can also download the project source and run::
 
 Dependencies
 ============
-Swiftype App Search supports Python 2.7 and Python 3.3+. It depends on requests.
+Swiftype App Search supports Python 2.7 and Python 3.3+. It depends on requests and PyJWT.
 
 Usage
 ========
