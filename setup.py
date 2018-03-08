@@ -37,7 +37,8 @@ setup(
     keywords='swiftype elastic app search api',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
-        'requests'
+        'requests',
+        'PyJWT'
     ],
     extras_require={
         'test': [
