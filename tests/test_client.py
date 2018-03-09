@@ -7,13 +7,31 @@ from swiftype_app_search.exceptions import InvalidDocument
 class TestClient(TestCase):
 
     def setUp(self):
-        self.engine_name = 'engine_name'
+        self.engine_name = 'some-engine-name'
         self.client = Client('account_host_key', 'api_key')
 
         self.document_index_url = "{}/{}".format(
             self.client.swiftype_session.base_url,
             "engines/{}/documents".format(self.engine_name)
         )
+
+    def test_index_document_validation(self):
+        invalid_document = {'does': 'not have the id field'}
+        with self.assertRaises(InvalidDocument) as context:
+            self.client.index_documents(self.engine_name, [invalid_document])
+        self.assertEqual(str(context.exception), 'Missing required fields: id')
+        self.assertEqual(context.exception.document, invalid_document)
+
+    def test_index_document_processing_error(self):
+        invalid_document = {'id': 'something', 'bad': {'no': 'nested'}}
+        error = 'some processing error'
+        stubbed_return = [{'id': 'something', 'errors': [error]}]
+        with requests_mock.Mocker() as m:
+            m.register_uri('POST', self.document_index_url, json=stubbed_return, status_code=200)
+
+            with self.assertRaises(InvalidDocument) as context:
+                self.client.index_document(self.engine_name, invalid_document)
+                self.assertEqual(str(context.exception), error)
 
     def test_index_documents_validation(self):
         invalid_documents = [
@@ -22,7 +40,7 @@ class TestClient(TestCase):
             }
         ]
         with self.assertRaises(InvalidDocument) as context:
-            self.client.index_documents('some engine name', invalid_documents)
+            self.client.index_documents(self.engine_name, invalid_documents)
         self.assertEqual(str(context.exception), 'Missing required fields: id')
         self.assertEqual(context.exception.document, invalid_documents[0])
 

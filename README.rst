@@ -40,6 +40,20 @@ Instantiating a client
     >>> api_key = 'api-mu75psc5egt9ppzuycnc2mc3'
     >>> client = Client(account_host_key, api_key)
 
+Index document
+--------------
+
+.. code-block:: python
+
+    >>> engine_name = 'favorite-videos'
+    >>> documents = {
+          'id': 'INscMGmhmX4',
+          'url': 'https://www.youtube.com/watch?v=INscMGmhmX4',
+          'title': 'The Original Grumpy Cat',
+          'body': 'A wonderful video of a magnificent cat.'
+        }
+    >>> client.index_document(engine_name, document)
+    {'id': 'INscMGmhmX4'}
 
 Index documents
 ---------------
