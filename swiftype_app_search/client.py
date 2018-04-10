@@ -32,16 +32,38 @@ class Client:
         data = json.dumps(document_ids)
         return self.swiftype_session.request('get', endpoint, data=data)
 
+    def index_document(self, engine_name, document):
+        """
+        Create or update a document for an engine. Raises
+        :class:`~swiftype_app_search.exceptions.InvalidDocument` when the document
+        is missing required fields, contains unsupported fields, or has
+        processing errors
+
+        :param engine_name: Name of engine to index documents into.
+        :param document: Hash representing a single document.
+        :return: dict processed document status
+        """
+        document_status = self.index_documents(engine_name, [document])[0]
+        errors = document_status['errors']
+        if errors:
+            raise InvalidDocument('; '.join(errors), document)
+
+        return {
+            key: document_status[key]
+            for key in document_status
+            if key != 'errors'
+        }
+
     def index_documents(self, engine_name, documents):
         """
         Create or update documents for an engine. Raises
-        :class:`~swiftype_app_search.exceptions.InvalidDocument` if any
-        documents do not have an `id`.
+        :class:`~swiftype_app_search.exceptions.InvalidDocument` when the document
+        is missing required fields or contains unsupported fields
 
         :param engine_name: Name of engine to index documents into.
         :param documents: Hashes representing documents.
-        :return: Array of hashes with keys of id and errors. Errors will be an
-        array of errors if the document could not be indexed successfully.
+        :return: Array of document status dictionaries. Errors will be present
+        in a document status with a key of `errors`.
         """
         self._raise_if_documents_invalid(documents)
 
