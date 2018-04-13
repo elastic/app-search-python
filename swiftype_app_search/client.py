@@ -36,8 +36,7 @@ class Client:
         """
         Create or update a document for an engine. Raises
         :class:`~swiftype_app_search.exceptions.InvalidDocument` when the document
-        is missing required fields, contains unsupported fields, or has
-        processing errors
+        has processing errors
 
         :param engine_name: Name of engine to index documents into.
         :param document: Hash representing a single document.
@@ -56,33 +55,17 @@ class Client:
 
     def index_documents(self, engine_name, documents):
         """
-        Create or update documents for an engine. Raises
-        :class:`~swiftype_app_search.exceptions.InvalidDocument` when the document
-        is missing required fields or contains unsupported fields
+        Create or update documents for an engine.
 
         :param engine_name: Name of engine to index documents into.
         :param documents: Hashes representing documents.
         :return: Array of document status dictionaries. Errors will be present
         in a document status with a key of `errors`.
         """
-        self._raise_if_documents_invalid(documents)
-
         endpoint = "engines/{}/documents".format(engine_name)
         data = json.dumps(documents)
 
         return self.swiftype_session.request('post', endpoint, data=data)
-
-    def _raise_if_documents_invalid(self, documents):
-        for document in documents:
-            missing_required_keys = set(self.REQUIRED_DOCUMENT_TOP_LEVEL_KEYS) -\
-                                    set(document.keys())
-            if len(missing_required_keys):
-                raise InvalidDocument(
-                    "Missing required fields: {}".format(
-                        ','.join(missing_required_keys)),
-                    document
-                )
-
 
     def destroy_documents(self, engine_name, document_ids):
         """
