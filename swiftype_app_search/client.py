@@ -7,7 +7,6 @@ from .exceptions import InvalidDocument
 class Client:
 
     SWIFTYPE_APP_SEARCH_BASE_ENDPOINT = 'api.swiftype.com/api/as/v1'
-    REQUIRED_DOCUMENT_TOP_LEVEL_KEYS = ['id']
     SIGNED_SEARCH_TOKEN_JWT_ALGORITHM = 'HS256'
 
     def __init__(self, account_host_key, api_key,
