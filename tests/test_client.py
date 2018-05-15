@@ -78,17 +78,6 @@ class TestClient(TestCase):
             response = self.client.destroy_documents(self.engine_name, [id])
             self.assertEqual(response, expected_return)
 
-    def test_list_engines(self):
-        expected_return = [
-            { 'name': 'myawesomeengine' }
-        ]
-
-        with requests_mock.Mocker() as m:
-            url = "{}/{}".format(self.client.swiftype_session.base_url, 'engines')
-            m.register_uri('GET', url, json=expected_return, status_code=200)
-            response = self.client.list_engines()
-            self.assertEqual(response, expected_return)
-
     def test_get_engine(self):
         engine_name = 'myawesomeengine'
         expected_return = [
