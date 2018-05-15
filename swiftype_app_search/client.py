@@ -127,15 +127,15 @@ class Client:
         return self.swiftype_session.request('get', endpoint, json=options)
 
     @staticmethod
-    def create_signed_search_key(api_key, api_key_id, options):
+    def create_signed_search_key(api_key, api_key_name, options):
         """
         Creates a signed API key that will overwrite all search options (except
         filters) made with this key.
 
         :param api_key: An API key to use for this client.
-        :param api_token_id: A unique API Key identifier
+        :param api_key_name: The unique name for the API Key
         :param options: Search options to override.
         :return: A JWT signed api token.
         """
-        options['api_key_id'] = api_key_id
+        options['api_key_name'] = api_key_name
         return jwt.encode(options, api_key, algorithm=Client.SIGNED_SEARCH_TOKEN_JWT_ALGORITHM)

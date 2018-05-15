@@ -145,6 +145,6 @@ Creating a search key that will only search over the body field.
 .. code-block:: python
 
     >>> api_key = 'api-mu75psc5egt9ppzuycnc2mc3'
-    >>> api_key_id = '42'
-    >>> signed_search_key = Client.create_signed_search_key(api_key, api_key_id, {'search_fields': { 'body': {}}})
+    >>> api_key_name = 'my-api-token'
+    >>> signed_search_key = Client.create_signed_search_key(api_key, api_key_name, {'search_fields': { 'body': {}}})
     >>> client = Client(account_host_key, signed_search_key)
