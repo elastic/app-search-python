@@ -2,8 +2,6 @@
 Python Client for Swiftype App Search API
 =========================================
 
-**Note: Swiftype App Search is currently in beta**
-
 About
 =====
 

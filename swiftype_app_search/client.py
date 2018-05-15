@@ -78,13 +78,17 @@ class Client:
         data = json.dumps(document_ids)
         return self.swiftype_session.request('delete', endpoint, data=data)
 
-    def list_engines(self):
+    def list_engines(self, current=1, size=20):
         """
         Lists engines that the api key has access to.
+
+        :param current: Page of engines
+        :param size: Number of engines to return per page
         :return: List of dictionaries with key value pair corresponding to the
         name of the engine.
         """
-        return self.swiftype_session.request('get', 'engines')
+        data = { 'page': { 'current': current, 'size': size } }
+        return self.swiftype_session.request('get', 'engines', data=data)
 
     def get_engine(self, engine_name):
         """
