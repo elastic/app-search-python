@@ -40,12 +40,10 @@ setup(
         'requests',
         'PyJWT'
     ],
-    extras_require={
-        'test': [
-            'mock',
-            'requests_mock',
-            'future'
-        ],
-    },
+    tests_require=[
+        'mock',
+        'requests_mock',
+        'future'
+    ],
     test_suite='tests'
 )

@@ -88,7 +88,7 @@ class Client:
         name of the engine.
         """
         data = { 'page': { 'current': current, 'size': size } }
-        return self.swiftype_session.request('get', 'engines', data=data)
+        return self.swiftype_session.request('get', 'engines', json=data)
 
     def get_engine(self, engine_name):
         """

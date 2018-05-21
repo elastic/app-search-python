@@ -21,6 +21,11 @@ You can also download the project source and run::
 
     $ python setup.py install
 
+Running Tests
+============
+
+    $ python setup.py test
+
 Dependencies
 ============
 Swiftype App Search supports Python 2.7 and Python 3.3+. It depends on requests and PyJWT.
@@ -44,7 +49,7 @@ Index document
 .. code-block:: python
 
     >>> engine_name = 'favorite-videos'
-    >>> documents = {
+    >>> document = {
           'id': 'INscMGmhmX4',
           'url': 'https://www.youtube.com/watch?v=INscMGmhmX4',
           'title': 'The Original Grumpy Cat',
@@ -101,8 +106,18 @@ List Engines
 
 .. code-block:: python
 
-    >>> client.list_engines()
-    [{'name': 'favorite-videos'}, {'name': 'another-engine'}]
+    >>> client.list_engines(current=1, size=20)
+    {
+        'meta': {
+            'page': {
+            'current': 1,
+            'total_pages': 1,
+            'total_results': 2,
+            'size': 20
+            }
+        },
+        'results': [{'name': 'favorite-videos'}, {'name': 'another-engine'}]
+    }
 
 Get an Engine
 -------------

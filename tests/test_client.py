@@ -4,7 +4,6 @@ import requests_mock
 from swiftype_app_search import Client
 from swiftype_app_search.exceptions import InvalidDocument
 
-
 class TestClient(TestCase):
 
     def setUp(self):
@@ -76,6 +75,39 @@ class TestClient(TestCase):
         with requests_mock.Mocker() as m:
             m.register_uri('DELETE', self.document_index_url, json=expected_return, status_code=200)
             response = self.client.destroy_documents(self.engine_name, [id])
+            self.assertEqual(response, expected_return)
+
+    def test_list_engines(self):
+        expected_return = [
+            { 'name': 'myawesomeengine' }
+        ]
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(self.client.swiftype_session.base_url, 'engines')
+            m.register_uri('GET',
+                url,
+                additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
+                json=expected_return,
+                status_code=200
+            )
+            response = self.client.list_engines()
+            self.assertEqual(response, expected_return)
+
+    def test_list_engines_with_paging(self):
+        expected_return = [
+            {'name': 'myawesomeengine'}
+        ]
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(self.client.swiftype_session.base_url, 'engines')
+            m.register_uri(
+                'GET',
+                url,
+                additional_matcher=lambda x: x.text == '{"page": {"current": 10, "size": 2}}',
+                json=expected_return,
+                status_code=200
+            )
+            response = self.client.list_engines(current=10, size=2)
             self.assertEqual(response, expected_return)
 
     def test_get_engine(self):
