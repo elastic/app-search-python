@@ -8,12 +8,24 @@ class TestClient(TestCase):
 
     def setUp(self):
         self.engine_name = 'some-engine-name'
-        self.client = Client('account_host_key', 'api_key')
+        self.client = Client('host_identifier', 'api_key')
 
         self.document_index_url = "{}/{}".format(
             self.client.swiftype_session.base_url,
             "engines/{}/documents".format(self.engine_name)
         )
+
+    def test_deprecated_init_support_with_old_names(self):
+        self.client = Client(account_host_key='host_identifier', api_key='api_key')
+        self.assertEqual(self.client.account_host_key, 'host_identifier')
+
+    def test_deprecated_init_support_with_new_names(self):
+        self.client = Client(host_identifier='host_identifier', api_key='api_key')
+        self.assertEqual(self.client.account_host_key, 'host_identifier')
+
+    def test_deprecated_init_support_with_positional(self):
+        self.client = Client('host_identifier', 'api_key', 'example.com', False)
+        self.assertEqual(self.client.account_host_key, 'host_identifier')
 
     def test_index_document_processing_error(self):
         invalid_document = {'id': 'something', 'bad': {'no': 'nested'}}
