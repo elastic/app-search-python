@@ -39,9 +39,9 @@ Instantiating a client
 .. code-block:: python
 
     >>> from swiftype_app_search import Client
-    >>> account_host_key = 'host-c5s2mj'
+    >>> host_identifier = 'host-c5s2mj'
     >>> api_key = 'api-mu75psc5egt9ppzuycnc2mc3'
-    >>> client = Client(account_host_key, api_key)
+    >>> client = Client(host_identifier, api_key)
 
 Index document
 --------------
@@ -160,4 +160,4 @@ Creating a search key that will only search over the body field.
     >>> api_key = 'api-mu75psc5egt9ppzuycnc2mc3'
     >>> api_key_name = 'my-api-token'
     >>> signed_search_key = Client.create_signed_search_key(api_key, api_key_name, {'search_fields': { 'body': {}}})
-    >>> client = Client(account_host_key, signed_search_key)
+    >>> client = Client(host_identifier, signed_search_key)

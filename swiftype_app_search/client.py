@@ -9,14 +9,17 @@ class Client:
     SWIFTYPE_APP_SEARCH_BASE_ENDPOINT = 'api.swiftype.com/api/as/v1'
     SIGNED_SEARCH_TOKEN_JWT_ALGORITHM = 'HS256'
 
-    def __init__(self, account_host_key, api_key,
+    def __init__(self, host_identifier='', api_key='',
                  base_endpoint=SWIFTYPE_APP_SEARCH_BASE_ENDPOINT,
-                 use_https=True):
-        self.account_host_key = account_host_key
+                 use_https=True,
+                 account_host_key='' # Deprecated - use host_identifier instead
+                 ):
+        self.host_identifier = host_identifier or account_host_key
+        self.account_host_key = self.host_identifier # Deprecated
         self.api_key = api_key
 
         uri_scheme = 'https' if use_https else 'http'
-        base_url = "{}://{}.{}".format(uri_scheme, account_host_key, base_endpoint)
+        base_url = "{}://{}.{}".format(uri_scheme, host_identifier, base_endpoint)
         self.swiftype_session = SwiftypeRequestSession(self.api_key, base_url)
 
     def get_documents(self, engine_name, document_ids):
