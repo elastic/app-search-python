@@ -2,6 +2,8 @@
 Python Client for Swiftype App Search API
 =========================================
 
+[![CircleCI](https://circleci.com/gh/swiftype/swiftype-app-search-python.svg?style=svg)](https://circleci.com/gh/swiftype/swiftype-app-search-python)
+
 About
 =====
 
