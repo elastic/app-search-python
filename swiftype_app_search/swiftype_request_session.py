@@ -12,7 +12,8 @@ class SwiftypeRequestSession:
 
         headers = {
             'Authorization': "Bearer {}".format(api_key),
-            'User-Agent': "swiftype-app-search-python/{}".format(swiftype_app_search.__version__),
+            'X-Swiftype-Client': 'swiftype-app-search-python',
+            'X-Swiftype-Client-Version': swiftype_app_search.__version__,
             'content-type': 'application/json; charset=utf8'
         }
         self.session.headers.update(headers)
