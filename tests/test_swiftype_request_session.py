@@ -28,14 +28,15 @@ class TestSwiftypeRequestSession(TestCase):
         headers_to_check = {
             k: v
             for k, v in iteritems(self.swiftype_session.session.headers)
-            if k in ['Authorization', 'User-Agent']
+            if k in ['Authorization', 'X-Swiftype-Client', 'X-Swiftype-Client-Version']
         }
         version = swiftype_app_search.__version__
         self.assertEqual(
             headers_to_check,
             {
                 'Authorization': 'Bearer {}'.format(self.api_host_key),
-                'User-Agent': 'swiftype-app-search-python/{}'.format(version)
+                'X-Swiftype-Client': 'swiftype-app-search-python',
+                'X-Swiftype-Client-Version': version
             }
         )
 
