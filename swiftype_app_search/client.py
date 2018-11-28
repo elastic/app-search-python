@@ -19,7 +19,8 @@ class Client:
         self.api_key = api_key
 
         uri_scheme = 'https' if use_https else 'http'
-        base_url = "{}://{}.{}".format(uri_scheme, host_identifier, base_endpoint)
+        host_prefix = host_identifier + '.' if host_identifier else ''
+        base_url = "{}://{}{}".format(uri_scheme, host_prefix, base_endpoint)
         self.swiftype_session = SwiftypeRequestSession(self.api_key, base_url)
 
     def get_documents(self, engine_name, document_ids):

@@ -27,6 +27,15 @@ class TestClient(TestCase):
         self.client = Client('host_identifier', 'api_key', 'example.com', False)
         self.assertEqual(self.client.account_host_key, 'host_identifier')
 
+    def test_host_identifier_is_optional(self):
+        client = Client('', 'api_key', 'localhost:3002/api/as/v1', False)
+        query = 'query'
+
+        with requests_mock.Mocker() as m:
+            url = "http://localhost:3002/api/as/v1/engines/some-engine-name/search"
+            m.register_uri('GET', url, json={}, status_code=200)
+            client.search(self.engine_name, query, {})
+
     def test_index_document_processing_error(self):
         invalid_document = {'id': 'something', 'bad': {'no': 'nested'}}
         error = 'some processing error'
