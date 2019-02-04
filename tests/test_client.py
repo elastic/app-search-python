@@ -169,11 +169,25 @@ class TestClient(TestCase):
 
     def test_search(self):
         query = 'query'
+        expected_return = { 'meta': {}, 'results': []}
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
                 self.client.swiftype_session.base_url,
                 "engines/{}/search".format(self.engine_name)
             )
-            m.register_uri('GET', url, json={}, status_code=200)
-            self.client.search(self.engine_name, query, {})
+            m.register_uri('GET', url, json=expected_return, status_code=200)
+            response = self.client.search(self.engine_name, query, {})
+            self.assertEqual(response, expected_return)
+
+    def test_multi_search(self):
+        expected_return = [{ 'meta': {}, 'results': []}, { 'meta': {}, 'results': []}]
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(
+                self.client.swiftype_session.base_url,
+                "engines/{}/multi_search".format(self.engine_name)
+            )
+            m.register_uri('GET', url, json=expected_return, status_code=200)
+            response = self.client.multi_search(self.engine_name, {})
+            self.assertEqual(response, expected_return)

@@ -155,6 +155,19 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 {'meta': {'page': {'current': 1, 'total_pages': 1, 'total_results': 2, 'size': 10}, ...}, 'results': [...]}
 ```
 
+#### Multi-Search
+
+```python
+>>> client.multi_search('favorite-videos', [{
+  'query': 'cat',
+  'options': { 'search_fields': { 'title': {} }}
+},{
+  'query': 'dog',
+  'options': { 'search_fields': { 'body': {} }}
+}])
+[{'meta': {...}, 'results': [...]}, {'meta': {...}, 'results': [...]}]
+```
+
 ### Create a Signed Search Key
 
 Creating a search key that will only search over the body field.

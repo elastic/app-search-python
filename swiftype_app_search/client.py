@@ -134,6 +134,31 @@ class Client:
         options['query'] = query
         return self.swiftype_session.request('get', endpoint, json=options)
 
+    def multi_search(self, engine_name, searches=None):
+        """
+        Run multiple searches for documents on a single request.
+        See https://swiftype.com/documentation/app-search/ for more details
+        on options and return values.
+
+        :param engine_name: Name of engine to search over.
+        :param options: Array of search options. ex. {query: String, options: Dict}
+        """
+
+        def build_options_from_search(search):
+            if 'options' in search:
+                options = search['options']
+            else:
+                options = {}
+            options['query'] = search['query']
+            return options
+
+        endpoint = "engines/{}/multi_search".format(engine_name)
+        options = {
+            'queries': map(build_options_from_search, searches)
+        }
+        return self.swiftype_session.request('get', endpoint, json=options)
+
+
     @staticmethod
     def create_signed_search_key(api_key, api_key_name, options):
         """
