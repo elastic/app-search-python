@@ -87,6 +87,29 @@ class TestClient(TestCase):
             response = self.client.get_documents(self.engine_name, [id])
             self.assertEqual(response, expected_return)
 
+    def test_list_documents(self):
+        expected_return = {
+            'meta': {
+                'page': {'current': 1, 'total_results': 1, 'total_pages': 1, 'size': 20},
+                'results': [
+                    {'body': 'this is a test', 'id': '1'},
+                    {'body': 'this is also a test', 'id': '2'}
+                ]
+            }
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/documents/list".format(self.client.swiftype_session.base_url, self.engine_name)
+            m.register_uri('GET',
+                url,
+                additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.list_documents(self.engine_name)
+            self.assertEqual(response, expected_return)
+
     def test_destroy_documents(self):
         id = 'INscMGmhmX4'
         expected_return = [

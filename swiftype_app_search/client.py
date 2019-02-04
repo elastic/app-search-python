@@ -35,6 +35,17 @@ class Client:
         data = json.dumps(document_ids)
         return self.swiftype_session.request('get', endpoint, data=data)
 
+    def list_documents(self, engine_name, current=1, size=20):
+        """
+        Lists all documents in engine.
+
+        :param current: Page of documents
+        :param size: Number of documents to return per page
+        :return: List of documemts.
+        """
+        data = { 'page': { 'current': current, 'size': size } }
+        return self.swiftype_session.request('get', "engines/{}/documents/list".format(engine_name), json=data)
+
     def index_document(self, engine_name, document):
         """
         Create or update a document for an engine. Raises

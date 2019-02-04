@@ -102,6 +102,24 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 [{'id': 'INscMGmhmX4','url': 'https://www.youtube.com/watch?v=INscMGmhmX4','title': 'The Original Grumpy Cat','body': 'A wonderful video of a magnificent cat.'}]
 ```
 
+### List Documents
+```python
+>>> engine_name = 'favorite-videos'
+>>> client.list_documents(engine_name, current=1, size=20)
+{
+    'meta': {
+        'page': {
+        'current': 1,
+        'total_pages': 1,
+        'total_results': 2,
+        'size': 20
+        }
+    },
+    'results': [{'id': 'INscMGmhmX4','url': 'https://www.youtube.com/watch?v=INscMGmhmX4','title': 'The Original Grumpy Cat','body': 'A wonderful video of a magnificent cat.'}]
+}
+```
+
+
 ### Destroy Documents
 
 ```python
