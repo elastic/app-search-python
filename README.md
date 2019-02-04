@@ -186,7 +186,7 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 {'meta': {'page': {'current': 1, 'total_pages': 1, 'total_results': 2, 'size': 10}, ...}, 'results': [...]}
 ```
 
-#### Multi-Search
+### Multi-Search
 
 ```python
 >>> client.multi_search('favorite-videos', [{
@@ -198,6 +198,36 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 }])
 [{'meta': {...}, 'results': [...]}, {'meta': {...}, 'results': [...]}]
 ```
+
+### Query Suggestion
+
+```python
+>>> client.query_suggestion('favorite-videos', 'cat', {
+  'size': 10,
+  'types': {
+    'documents': {
+      'fields': ['title']
+    }
+  }
+})
+{'results': {'documents': [{'suggestion': 'cat'}]}, 'meta': {'request_id': '390be384ad5888353e1b32adcfaaf1c9'}}
+```
+
+```ruby
+engine_name = 'favorite-videos'
+
+options = {
+  :size => 3,
+  :types => {
+    :documents => {
+      :fields => ['title']
+    }
+  }
+}
+
+client.query_suggestion(engine_name, 'cat', options)
+```
+
 
 ### Create a Signed Search Key
 

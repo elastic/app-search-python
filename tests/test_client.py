@@ -229,3 +229,16 @@ class TestClient(TestCase):
             m.register_uri('GET', url, json=expected_return, status_code=200)
             response = self.client.multi_search(self.engine_name, {})
             self.assertEqual(response, expected_return)
+
+    def test_query_suggestion(self):
+        query = 'query'
+        expected_return = { 'meta': {}, 'results': {}}
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(
+                self.client.swiftype_session.base_url,
+                "engines/{}/query_suggestion".format(self.engine_name)
+            )
+            m.register_uri('GET', url, json=expected_return, status_code=200)
+            response = self.client.query_suggestion(self.engine_name, query, {})
+            self.assertEqual(response, expected_return)

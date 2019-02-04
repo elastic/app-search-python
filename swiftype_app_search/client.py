@@ -186,6 +186,20 @@ class Client:
         }
         return self.swiftype_session.request('get', endpoint, json=options)
 
+    def query_suggestion(self, engine_name, query, options=None):
+        """
+        Request Query Suggestions. See https://swiftype.com/documentation/app-search/ for more details
+        on options and return values.
+
+        :param engine_name: Name of engine to search over.
+        :param query: Query string to search for.
+        :param options: Dict of search options.
+        """
+        endpoint = "engines/{}/query_suggestion".format(engine_name)
+        options = options or {}
+        options['query'] = query
+        return self.swiftype_session.request('get', endpoint, json=options)
+
 
     @staticmethod
     def create_signed_search_key(api_key, api_key_name, options):
