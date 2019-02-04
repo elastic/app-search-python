@@ -81,6 +81,20 @@ class Client:
 
         return self.swiftype_session.request('post', endpoint, data=data)
 
+    def update_documents(self, engine_name, documents):
+        """
+        Update a batch of documents for an engine.
+
+        :param engine_name: Name of engine to index documents into.
+        :param documents: Hashes representing documents.
+        :return: Array of document status dictionaries. Errors will be present
+        in a document status with a key of `errors`.
+        """
+        endpoint = "engines/{}/documents".format(engine_name)
+        data = json.dumps(documents)
+
+        return self.swiftype_session.request('patch', endpoint, data=data)
+
     def destroy_documents(self, engine_name, document_ids):
         """
         Destroys documents by id for an engine.

@@ -94,6 +94,20 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 [{'id': 'INscMGmhmX4', 'errors': []}, {'id': 'JNDFojsd02', 'errors': []}]
 ```
 
+### Indexing: Updating documents (Partial Updates)
+
+```python
+>>> engine_name = 'favorite-videos'
+>>> documents = [
+    {
+      'id': 'INscMGmhmX4',
+      'title': 'Updated title'
+    }
+]
+
+>>> client.update_documents(engine_name, documents)
+```
+
 ### Get Documents
 
 ```python
@@ -118,7 +132,6 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
     'results': [{'id': 'INscMGmhmX4','url': 'https://www.youtube.com/watch?v=INscMGmhmX4','title': 'The Original Grumpy Cat','body': 'A wonderful video of a magnificent cat.'}]
 }
 ```
-
 
 ### Destroy Documents
 
