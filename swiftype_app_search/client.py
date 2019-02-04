@@ -127,13 +127,16 @@ class Client:
         """
         return self.swiftype_session.request('get', "engines/{}".format(engine_name))
 
-    def create_engine(self, engine_name):
+    def create_engine(self, engine_name, language=None):
         """
         Creates an engine with the specified name.
         :param engine_name: Name of the new engine.
-        :return: A dictionary corresponding to the name of the engine.
+        :param language: Language of the new engine.
+        :return: A dictionary corresponding to the new engine.
         """
         data = { 'name': engine_name }
+        if language is not None:
+            data['language'] = language
         return self.swiftype_session.request('post', 'engines', json=data)
 
     def destroy_engine(self, engine_name):

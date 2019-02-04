@@ -168,8 +168,8 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 ### Create an Engine
 
 ```python
->>> client.create_engine('favorite-videos')
-{'name': 'favorite-videos'}
+>>> client.create_engine('favorite-videos', 'en')
+{'name': 'favorite-videos', 'type': 'default', 'language': 'en'}
 ```
 
 ### Destroy an Engine

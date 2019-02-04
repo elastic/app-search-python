@@ -185,12 +185,12 @@ class TestClient(TestCase):
 
     def test_create_engine(self):
         engine_name = 'myawesomeengine'
-        expected_return = {'name': engine_name}
+        expected_return = {'name': engine_name, 'language': 'en'}
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(self.client.swiftype_session.base_url, 'engines')
             m.register_uri('POST', url, json=expected_return, status_code=200)
-            response = self.client.create_engine(engine_name)
+            response = self.client.create_engine(engine_name, 'en')
             self.assertEqual(response, expected_return)
 
     def test_destroy_engine(self):
