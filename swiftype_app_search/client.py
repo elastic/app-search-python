@@ -182,7 +182,7 @@ class Client:
 
         endpoint = "engines/{}/multi_search".format(engine_name)
         options = {
-            'queries': map(build_options_from_search, searches)
+            'queries': list(map(build_options_from_search, searches))
         }
         return self.swiftype_session.request('get', endpoint, json=options)
 
