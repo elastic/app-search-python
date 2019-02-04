@@ -242,3 +242,12 @@ class TestClient(TestCase):
             m.register_uri('GET', url, json=expected_return, status_code=200)
             response = self.client.query_suggestion(self.engine_name, query, {})
             self.assertEqual(response, expected_return)
+
+    def test_click(self):
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(
+                self.client.swiftype_session.base_url,
+                "engines/{}/click".format(self.engine_name)
+            )
+            m.register_uri('POST', url, json={}, status_code=200)
+            self.client.click(self.engine_name, {'query': 'cat', 'document_id': 'INscMGmhmX4'})

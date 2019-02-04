@@ -213,19 +213,10 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 {'results': {'documents': [{'suggestion': 'cat'}]}, 'meta': {'request_id': '390be384ad5888353e1b32adcfaaf1c9'}}
 ```
 
-```ruby
-engine_name = 'favorite-videos'
+### Clickthrough Tracking
 
-options = {
-  :size => 3,
-  :types => {
-    :documents => {
-      :fields => ['title']
-    }
-  }
-}
-
-client.query_suggestion(engine_name, 'cat', options)
+```python
+>>> client.click(engine_name, {'query': 'cat', 'document_id': 'INscMGmhmX4'})
 ```
 
 

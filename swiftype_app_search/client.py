@@ -200,6 +200,18 @@ class Client:
         options['query'] = query
         return self.swiftype_session.request('get', endpoint, json=options)
 
+    def click(self, engine_name, options):
+        """
+        Sends a click event to the Swiftype App Search Api, to track a click-through event.
+        See https://swiftype.com/documentation/app-search/ for more details
+        on options and return values.
+
+        :param engine_name: Name of engine to search over.
+        :param options: Dict of search options.
+        """
+        endpoint = "engines/{}/click".format(engine_name)
+        return self.swiftype_session.request_ignore_response('post', endpoint, json=options)
+
 
     @staticmethod
     def create_signed_search_key(api_key, api_key_name, options):

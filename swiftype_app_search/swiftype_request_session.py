@@ -33,8 +33,11 @@ class SwiftypeRequestSession:
         response.raise_for_status()
 
     def request(self, http_method, endpoint, base_url=None, **kwargs):
+        return self.request_ignore_response(http_method, endpoint, base_url, **kwargs).json()
+
+    def request_ignore_response(self, http_method, endpoint, base_url=None, **kwargs):
         base_url = base_url or self.base_url
         url = "{}/{}".format(base_url, endpoint)
         response = self.session.request(http_method, url, **kwargs)
         self.raise_if_error(response)
-        return response.json()
+        return response
