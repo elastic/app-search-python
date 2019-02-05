@@ -94,12 +94,43 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 [{'id': 'INscMGmhmX4', 'errors': []}, {'id': 'JNDFojsd02', 'errors': []}]
 ```
 
+### Indexing: Updating documents (Partial Updates)
+
+```python
+>>> engine_name = 'favorite-videos'
+>>> documents = [
+    {
+      'id': 'INscMGmhmX4',
+      'title': 'Updated title'
+    }
+]
+
+>>> client.update_documents(engine_name, documents)
+```
+
 ### Get Documents
 
 ```python
 >>> engine_name = 'favorite-videos'
 >>> client.get_documents(engine_name, ['INscMGmhmX4'])
 [{'id': 'INscMGmhmX4','url': 'https://www.youtube.com/watch?v=INscMGmhmX4','title': 'The Original Grumpy Cat','body': 'A wonderful video of a magnificent cat.'}]
+```
+
+### List Documents
+```python
+>>> engine_name = 'favorite-videos'
+>>> client.list_documents(engine_name, current=1, size=20)
+{
+    'meta': {
+        'page': {
+        'current': 1,
+        'total_pages': 1,
+        'total_results': 2,
+        'size': 20
+        }
+    },
+    'results': [{'id': 'INscMGmhmX4','url': 'https://www.youtube.com/watch?v=INscMGmhmX4','title': 'The Original Grumpy Cat','body': 'A wonderful video of a magnificent cat.'}]
+}
 ```
 
 ### Destroy Documents
@@ -137,8 +168,8 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 ### Create an Engine
 
 ```python
->>> client.create_engine('favorite-videos')
-{'name': 'favorite-videos'}
+>>> client.create_engine('favorite-videos', 'en')
+{'name': 'favorite-videos', 'type': 'default', 'language': 'en'}
 ```
 
 ### Destroy an Engine
@@ -154,6 +185,40 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 >>> client.search('favorite-videos', 'grumpy cat', {})
 {'meta': {'page': {'current': 1, 'total_pages': 1, 'total_results': 2, 'size': 10}, ...}, 'results': [...]}
 ```
+
+### Multi-Search
+
+```python
+>>> client.multi_search('favorite-videos', [{
+  'query': 'cat',
+  'options': { 'search_fields': { 'title': {} }}
+},{
+  'query': 'dog',
+  'options': { 'search_fields': { 'body': {} }}
+}])
+[{'meta': {...}, 'results': [...]}, {'meta': {...}, 'results': [...]}]
+```
+
+### Query Suggestion
+
+```python
+>>> client.query_suggestion('favorite-videos', 'cat', {
+  'size': 10,
+  'types': {
+    'documents': {
+      'fields': ['title']
+    }
+  }
+})
+{'results': {'documents': [{'suggestion': 'cat'}]}, 'meta': {'request_id': '390be384ad5888353e1b32adcfaaf1c9'}}
+```
+
+### Clickthrough Tracking
+
+```python
+>>> client.click(engine_name, {'query': 'cat', 'document_id': 'INscMGmhmX4'})
+```
+
 
 ### Create a Signed Search Key
 
