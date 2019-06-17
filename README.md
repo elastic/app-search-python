@@ -54,10 +54,14 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 
 ```python
 >>> from swiftype_app_search import Client
->>> client = Client(api_key='private-mu75psc5egt9ppzuycnc2mc3', base_endpoint='localhost:3002/api/as/v1', use_https=False)
+>>> client = Client(
+    api_key='private-mu75psc5egt9ppzuycnc2mc3',
+    base_endpoint='localhost:3002/api/as/v1',
+    use_https=False
+)
 ```
 
-### Index multiple document
+### Indexing: Creating or Updating a Single Document
 
 ```python
 >>> engine_name = 'favorite-videos'
@@ -71,7 +75,7 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 {'id': 'INscMGmhmX4'}
 ```
 
-### Index documents
+### Indexing: Creating or Updating Multiple Documents
 
 ```python
 >>> engine_name = 'favorite-videos'
@@ -179,7 +183,7 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 {'deleted': True}
 ```
 
-### Running search
+### Searching
 
 ```python
 >>> client.search('favorite-videos', 'grumpy cat', {})
@@ -253,7 +257,7 @@ You can checkout the [Elastic App Search community discuss forums](https://discu
 
 ## Contribute 🚀
 
-We welcome contributors to the project. Before you begin, a couple notes...
+We welcome contributors to the project. Before you begin, a couple notes:
 
 + Prior to opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/swiftype/swiftype-app-search-python/issues).
 + Please write simple code and concise documentation, when appropriate.
