@@ -41,7 +41,6 @@ setup(
         'PyJWT'
     ],
     tests_require=[
-        'mock',
         'requests_mock',
         'future'
     ],
