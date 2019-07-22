@@ -136,6 +136,39 @@ class TestClient(TestCase):
             response = self.client.destroy_documents(self.engine_name, [id])
             self.assertEqual(response, expected_return)
 
+    def test_get_schema(self):
+        expected_return = {
+            'square_km': 'text'
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/schema".format(self.client.swiftype_session.base_url, self.engine_name)
+            m.register_uri('GET',
+                url,
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.get_schema(self.engine_name)
+            self.assertEqual(response, expected_return)
+
+    def test_update_schema(self):
+        expected_return = {
+            'square_mi': 'number',
+            'square_km': 'number'
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/schema".format(self.client.swiftype_session.base_url, self.engine_name)
+            m.register_uri('POST',
+                url,
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.update_schema(self.engine_name, expected_return)
+            self.assertEqual(response, expected_return)
+
     def test_list_engines(self):
         expected_return = [
             { 'name': 'myawesomeengine' }

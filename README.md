@@ -145,6 +145,26 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 [{'id': 'INscMGmhmX4','result': True}]
 ```
 
+### Get Schema
+
+```python
+>>> engine_name = 'favorite-videos'
+>>> client.get_schema(engine_name)
+{'name':'text', 'square_km': 'number', 'square_mi': 'text'}
+```
+
+### Create/Update Schema
+
+```python
+>>> engine_name = 'favorite-videos'
+>>> client.update_schema(engine_name, {'square_km': 'text'})
+{'square_km': 'text'}
+>>> client.update_schema(engine_name, {'square_mi': 'text'})
+{'square_km': 'text', 'square_mi': 'text'}
+>>> client.update_schema(engine_name, {'square_km': 'number'})
+{'square_km': 'number', 'square_mi': 'text'}
+```
+
 ### List Engines
 
 ```python

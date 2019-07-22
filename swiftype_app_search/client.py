@@ -107,6 +107,28 @@ class Client:
         data = json.dumps(document_ids)
         return self.swiftype_session.request('delete', endpoint, data=data)
 
+    def get_schema(self, engine_name):
+        """
+        Get current schema for an engine.
+
+        :param engine_name: Name of engine.
+        :return: Schema.
+        """
+        endpoint = "engines/{}/schema".format(engine_name)
+        return self.swiftype_session.request('get', endpoint)
+
+    def update_schema(self, engine_name, schema):
+        """
+        Create new schema fields or update the fields if they already exists.
+
+        :param engine_name: Name of engine.
+        :param schema: Schema to be updated as dict.
+        :return: Updated schema.
+        """
+        endpoint = "engines/{}/schema".format(engine_name)
+        data = json.dumps(schema)
+        return self.swiftype_session.request('post', endpoint, data=data)
+
     def list_engines(self, current=1, size=20):
         """
         Lists engines that the api key has access to.
