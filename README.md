@@ -22,7 +22,7 @@
 To install the client, use pip:
 
 ```python
-python -m pip install elastic_app_search
+python -m pip install elastic-app-search
 ```
 
 You can also download the project source and run::
