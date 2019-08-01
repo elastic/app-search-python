@@ -35,7 +35,7 @@ class TestRequestSession(TestCase):
             headers_to_check,
             {
                 'Authorization': 'Bearer {}'.format(self.api_host_key),
-                'X-Swiftype-Client': 'swiftype-app-search-python',
+                'X-Swiftype-Client': 'elastic-app-search-python',
                 'X-Swiftype-Client-Version': version
             }
         )

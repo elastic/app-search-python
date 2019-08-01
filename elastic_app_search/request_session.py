@@ -12,7 +12,7 @@ class RequestSession:
 
         headers = {
             'Authorization': "Bearer {}".format(api_key),
-            'X-Swiftype-Client': 'swiftype-app-search-python',
+            'X-Swiftype-Client': 'elastic-app-search-python',
             'X-Swiftype-Client-Version': elastic_app_search.__version__,
             'content-type': 'application/json; charset=utf8'
         }
