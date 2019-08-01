@@ -284,6 +284,6 @@ We welcome contributors to the project. Before you begin, a couple notes:
 
 ## License 📗
 
-[MIT](https://github.com/swiftype/swiftype-app-search-python/blob/master/LICENSE.txt) © [Elastic](https://github.com/elastic)
+[Apache 2.0](https://github.com/elastic/app-search-python/blob/master/LICENSE.txt) © [Elastic](https://github.com/elastic)
 
-Thank you to all the [contributors](https://github.com/swiftype/swiftype-app-search-python/graphs/contributors)!
+Thank you to all the [contributors](https://github.com/elastic/app-search-python/graphs/contributors)!
