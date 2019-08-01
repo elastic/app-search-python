@@ -22,7 +22,7 @@
 To install the client, use pip:
 
 ```python
-python -m pip install swiftype_app_search
+python -m pip install elastic_app_search
 ```
 
 You can also download the project source and run::
@@ -42,7 +42,7 @@ python setup.py install
 ### Instantiating a client
 
 ```python
->>> from swiftype_app_search import Client
+>>> from elastic_app_search import Client
 >>> host_identifier = 'host-c5s2mj'
 >>> api_key = 'private-mu75psc5egt9ppzuycnc2mc3'
 >>> client = Client(host_identifier, api_key)
@@ -53,7 +53,7 @@ python setup.py install
 The client can be configured to use a managed deploy by adjusting the `base_endpoint` and `use_https` parameters. Since managed deploys do not rely on a `host_identifier`, it can be omitted.
 
 ```python
->>> from swiftype_app_search import Client
+>>> from elastic_app_search import Client
 >>> client = Client(
     api_key='private-mu75psc5egt9ppzuycnc2mc3',
     base_endpoint='localhost:3002/api/as/v1',

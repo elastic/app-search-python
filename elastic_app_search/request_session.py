@@ -1,9 +1,9 @@
 import requests
-import swiftype_app_search
+import elastic_app_search
 from .exceptions import InvalidCredentials, NonExistentRecord, RecordAlreadyExists, BadRequest, Forbidden
 
 
-class SwiftypeRequestSession:
+class RequestSession:
 
     def __init__(self, api_key, base_url):
         self.api_key = api_key
@@ -13,7 +13,7 @@ class SwiftypeRequestSession:
         headers = {
             'Authorization': "Bearer {}".format(api_key),
             'X-Swiftype-Client': 'swiftype-app-search-python',
-            'X-Swiftype-Client-Version': swiftype_app_search.__version__,
+            'X-Swiftype-Client-Version': elastic_app_search.__version__,
             'content-type': 'application/json; charset=utf8'
         }
         self.session.headers.update(headers)

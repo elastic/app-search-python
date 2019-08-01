@@ -10,7 +10,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 here = path.abspath(path.dirname(__file__))
 about = {}
-with open(path.join(here, 'swiftype_app_search', '__version__.py'), 'r', 'utf-8') as f:
+with open(path.join(here, 'elastic_app_search', '__version__.py'), 'r', 'utf-8') as f:
     exec(f.read(), about)
 
 setup(
@@ -35,7 +35,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='swiftype elastic app search api',
+    keywords='elastic app search api',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
         'requests',
