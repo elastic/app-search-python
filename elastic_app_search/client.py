@@ -1,16 +1,16 @@
 import json
 import jwt
-from .swiftype_request_session import SwiftypeRequestSession
+from .request_session import RequestSession
 from .exceptions import InvalidDocument
 
 
 class Client:
 
-    SWIFTYPE_APP_SEARCH_BASE_ENDPOINT = 'api.swiftype.com/api/as/v1'
+    ELASTIC_APP_SEARCH_BASE_ENDPOINT = 'api.swiftype.com/api/as/v1'
     SIGNED_SEARCH_TOKEN_JWT_ALGORITHM = 'HS256'
 
     def __init__(self, host_identifier='', api_key='',
-                 base_endpoint=SWIFTYPE_APP_SEARCH_BASE_ENDPOINT,
+                 base_endpoint=ELASTIC_APP_SEARCH_BASE_ENDPOINT,
                  use_https=True,
                  account_host_key='' # Deprecated - use host_identifier instead
                  ):
@@ -21,7 +21,7 @@ class Client:
         uri_scheme = 'https' if use_https else 'http'
         host_prefix = host_identifier + '.' if host_identifier else ''
         base_url = "{}://{}{}".format(uri_scheme, host_prefix, base_endpoint)
-        self.swiftype_session = SwiftypeRequestSession(self.api_key, base_url)
+        self.session = RequestSession(self.api_key, base_url)
 
     def get_documents(self, engine_name, document_ids):
         """
@@ -33,7 +33,7 @@ class Client:
         """
         endpoint = "engines/{}/documents".format(engine_name)
         data = json.dumps(document_ids)
-        return self.swiftype_session.request('get', endpoint, data=data)
+        return self.session.request('get', endpoint, data=data)
 
     def list_documents(self, engine_name, current=1, size=20):
         """
@@ -44,12 +44,12 @@ class Client:
         :return: List of documemts.
         """
         data = { 'page': { 'current': current, 'size': size } }
-        return self.swiftype_session.request('get', "engines/{}/documents/list".format(engine_name), json=data)
+        return self.session.request('get', "engines/{}/documents/list".format(engine_name), json=data)
 
     def index_document(self, engine_name, document):
         """
         Create or update a document for an engine. Raises
-        :class:`~swiftype_app_search.exceptions.InvalidDocument` when the document
+        :class:`~elastic_app_search.exceptions.InvalidDocument` when the document
         has processing errors
 
         :param engine_name: Name of engine to index documents into.
@@ -79,7 +79,7 @@ class Client:
         endpoint = "engines/{}/documents".format(engine_name)
         data = json.dumps(documents)
 
-        return self.swiftype_session.request('post', endpoint, data=data)
+        return self.session.request('post', endpoint, data=data)
 
     def update_documents(self, engine_name, documents):
         """
@@ -93,7 +93,7 @@ class Client:
         endpoint = "engines/{}/documents".format(engine_name)
         data = json.dumps(documents)
 
-        return self.swiftype_session.request('patch', endpoint, data=data)
+        return self.session.request('patch', endpoint, data=data)
 
     def destroy_documents(self, engine_name, document_ids):
         """
@@ -105,7 +105,7 @@ class Client:
         """
         endpoint = "engines/{}/documents".format(engine_name)
         data = json.dumps(document_ids)
-        return self.swiftype_session.request('delete', endpoint, data=data)
+        return self.session.request('delete', endpoint, data=data)
 
     def get_schema(self, engine_name):
         """
@@ -115,7 +115,7 @@ class Client:
         :return: Schema.
         """
         endpoint = "engines/{}/schema".format(engine_name)
-        return self.swiftype_session.request('get', endpoint)
+        return self.session.request('get', endpoint)
 
     def update_schema(self, engine_name, schema):
         """
@@ -127,7 +127,7 @@ class Client:
         """
         endpoint = "engines/{}/schema".format(engine_name)
         data = json.dumps(schema)
-        return self.swiftype_session.request('post', endpoint, data=data)
+        return self.session.request('post', endpoint, data=data)
 
     def list_engines(self, current=1, size=20):
         """
@@ -139,7 +139,7 @@ class Client:
         name of the engine.
         """
         data = { 'page': { 'current': current, 'size': size } }
-        return self.swiftype_session.request('get', 'engines', json=data)
+        return self.session.request('get', 'engines', json=data)
 
     def get_engine(self, engine_name):
         """
@@ -147,7 +147,7 @@ class Client:
         :param engine_name: Name of an existing engine.
         :return: A dictionary corresponding to the name of the engine.
         """
-        return self.swiftype_session.request('get', "engines/{}".format(engine_name))
+        return self.session.request('get', "engines/{}".format(engine_name))
 
     def create_engine(self, engine_name, language=None):
         """
@@ -159,7 +159,7 @@ class Client:
         data = { 'name': engine_name }
         if language is not None:
             data['language'] = language
-        return self.swiftype_session.request('post', 'engines', json=data)
+        return self.session.request('post', 'engines', json=data)
 
     def destroy_engine(self, engine_name):
         """
@@ -168,7 +168,7 @@ class Client:
         :return: A dictionary with a single key of `deleted` and a value of
         True or False.
         """
-        return self.swiftype_session.request('delete', "engines/{}".format(engine_name))
+        return self.session.request('delete', "engines/{}".format(engine_name))
 
     def search(self, engine_name, query, options=None):
         """
@@ -182,7 +182,7 @@ class Client:
         endpoint = "engines/{}/search".format(engine_name)
         options = options or {}
         options['query'] = query
-        return self.swiftype_session.request('get', endpoint, json=options)
+        return self.session.request('get', endpoint, json=options)
 
     def multi_search(self, engine_name, searches=None):
         """
@@ -206,7 +206,7 @@ class Client:
         options = {
             'queries': list(map(build_options_from_search, searches))
         }
-        return self.swiftype_session.request('get', endpoint, json=options)
+        return self.session.request('get', endpoint, json=options)
 
     def query_suggestion(self, engine_name, query, options=None):
         """
@@ -220,11 +220,11 @@ class Client:
         endpoint = "engines/{}/query_suggestion".format(engine_name)
         options = options or {}
         options['query'] = query
-        return self.swiftype_session.request('get', endpoint, json=options)
+        return self.session.request('get', endpoint, json=options)
 
     def click(self, engine_name, options):
         """
-        Sends a click event to the Swiftype App Search Api, to track a click-through event.
+        Sends a click event to the Elastic App Search Api, to track a click-through event.
         See https://swiftype.com/documentation/app-search/ for more details
         on options and return values.
 
@@ -232,7 +232,7 @@ class Client:
         :param options: Dict of search options.
         """
         endpoint = "engines/{}/click".format(engine_name)
-        return self.swiftype_session.request_ignore_response('post', endpoint, json=options)
+        return self.session.request_ignore_response('post', endpoint, json=options)
 
 
     @staticmethod

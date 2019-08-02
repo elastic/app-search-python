@@ -1,8 +1,8 @@
 from unittest import TestCase
 import requests_mock
 
-from swiftype_app_search import Client
-from swiftype_app_search.exceptions import InvalidDocument
+from elastic_app_search import Client
+from elastic_app_search.exceptions import InvalidDocument
 
 class TestClient(TestCase):
 
@@ -11,7 +11,7 @@ class TestClient(TestCase):
         self.client = Client('host_identifier', 'api_key')
 
         self.document_index_url = "{}/{}".format(
-            self.client.swiftype_session.base_url,
+            self.client.session.base_url,
             "engines/{}/documents".format(self.engine_name)
         )
 
@@ -114,7 +114,7 @@ class TestClient(TestCase):
         }
 
         with requests_mock.Mocker() as m:
-            url = "{}/engines/{}/documents/list".format(self.client.swiftype_session.base_url, self.engine_name)
+            url = "{}/engines/{}/documents/list".format(self.client.session.base_url, self.engine_name)
             m.register_uri('GET',
                 url,
                 additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
@@ -142,7 +142,7 @@ class TestClient(TestCase):
         }
 
         with requests_mock.Mocker() as m:
-            url = "{}/engines/{}/schema".format(self.client.swiftype_session.base_url, self.engine_name)
+            url = "{}/engines/{}/schema".format(self.client.session.base_url, self.engine_name)
             m.register_uri('GET',
                 url,
                 json=expected_return,
@@ -159,7 +159,7 @@ class TestClient(TestCase):
         }
 
         with requests_mock.Mocker() as m:
-            url = "{}/engines/{}/schema".format(self.client.swiftype_session.base_url, self.engine_name)
+            url = "{}/engines/{}/schema".format(self.client.session.base_url, self.engine_name)
             m.register_uri('POST',
                 url,
                 json=expected_return,
@@ -175,7 +175,7 @@ class TestClient(TestCase):
         ]
 
         with requests_mock.Mocker() as m:
-            url = "{}/{}".format(self.client.swiftype_session.base_url, 'engines')
+            url = "{}/{}".format(self.client.session.base_url, 'engines')
             m.register_uri('GET',
                 url,
                 additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
@@ -191,7 +191,7 @@ class TestClient(TestCase):
         ]
 
         with requests_mock.Mocker() as m:
-            url = "{}/{}".format(self.client.swiftype_session.base_url, 'engines')
+            url = "{}/{}".format(self.client.session.base_url, 'engines')
             m.register_uri(
                 'GET',
                 url,
@@ -209,7 +209,7 @@ class TestClient(TestCase):
         ]
 
         with requests_mock.Mocker() as m:
-            url = "{}/{}/{}".format(self.client.swiftype_session.base_url,
+            url = "{}/{}/{}".format(self.client.session.base_url,
                                     'engines',
                                     engine_name)
             m.register_uri('GET', url, json=expected_return, status_code=200)
@@ -221,7 +221,7 @@ class TestClient(TestCase):
         expected_return = {'name': engine_name, 'language': 'en'}
 
         with requests_mock.Mocker() as m:
-            url = "{}/{}".format(self.client.swiftype_session.base_url, 'engines')
+            url = "{}/{}".format(self.client.session.base_url, 'engines')
             m.register_uri('POST', url, json=expected_return, status_code=200)
             response = self.client.create_engine(engine_name, 'en')
             self.assertEqual(response, expected_return)
@@ -231,7 +231,7 @@ class TestClient(TestCase):
         expected_return = {'deleted': True}
 
         with requests_mock.Mocker() as m:
-            url = "{}/{}/{}".format(self.client.swiftype_session.base_url,
+            url = "{}/{}/{}".format(self.client.session.base_url,
                                     'engines',
                                     engine_name)
             m.register_uri('DELETE', url, json=expected_return, status_code=200)
@@ -244,7 +244,7 @@ class TestClient(TestCase):
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
-                self.client.swiftype_session.base_url,
+                self.client.session.base_url,
                 "engines/{}/search".format(self.engine_name)
             )
             m.register_uri('GET', url, json=expected_return, status_code=200)
@@ -256,7 +256,7 @@ class TestClient(TestCase):
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
-                self.client.swiftype_session.base_url,
+                self.client.session.base_url,
                 "engines/{}/multi_search".format(self.engine_name)
             )
             m.register_uri('GET', url, json=expected_return, status_code=200)
@@ -269,7 +269,7 @@ class TestClient(TestCase):
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
-                self.client.swiftype_session.base_url,
+                self.client.session.base_url,
                 "engines/{}/query_suggestion".format(self.engine_name)
             )
             m.register_uri('GET', url, json=expected_return, status_code=200)
@@ -279,7 +279,7 @@ class TestClient(TestCase):
     def test_click(self):
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
-                self.client.swiftype_session.base_url,
+                self.client.session.base_url,
                 "engines/{}/click".format(self.engine_name)
             )
             m.register_uri('POST', url, json={}, status_code=200)
