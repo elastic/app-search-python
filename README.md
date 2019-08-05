@@ -1,9 +1,9 @@
-<p align="center"><img src="https://github.com/swiftype/swiftype-app-search-python/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
+<p align="center"><img src="https://github.com/elastic/app-search-python/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
 
-<p align="center"><a href="https://circleci.com/gh/swiftype/swiftype-app-search-python"><img src="https://circleci.com/gh/swiftype/swiftype-app-search-python.svg?style=svg" alt="CircleCI buidl"></a>
-<a href="https://github.com/swiftype/swiftype-app-search-python/releases"><img src="https://img.shields.io/github/release/swiftype/swiftype-app-search-python/all.svg?style=flat-square" alt="GitHub release" /></a></p>
+<p align="center"><a href="https://circleci.com/gh/elastic/app-search-python"><img src="https://circleci.com/gh/elastic/app-search-python.svg?style=svg&circle-token=81e61cb3b81dbfdc5cb8c0cbe8cf082d94c79f96 " alt="CircleCI build"></a>
 
-> A first-party Python client for building excellent, relevant search experiences with [Elastic App Search](https://www.elastic.co/cloud/app-search-service).
+
+> A first-party Python client for building excellent, relevant search experiences with [Elastic App Search](https://www.elastic.co/products/app-search).
 
 ## Contents
 
@@ -265,7 +265,7 @@ python setup.py test
 
 ### Where do I report issues with the client?
 
-If something is not working as expected, please open an [issue](https://github.com/swiftype/swiftype-app-search-python/issues/new).
+If something is not working as expected, please open an [issue](https://github.com/elastic/app-search-python/issues/new).
 
 ### Where can I learn more about App Search?
 
@@ -279,7 +279,7 @@ You can checkout the [Elastic App Search community discuss forums](https://discu
 
 We welcome contributors to the project. Before you begin, a couple notes:
 
-+ Prior to opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/swiftype/swiftype-app-search-python/issues).
++ Prior to opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/elastic/app-search-python/issues).
 + Please write simple code and concise documentation, when appropriate.
 
 ## License 📗
