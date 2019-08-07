@@ -1,6 +1,6 @@
 <p align="center"><img src="https://github.com/elastic/app-search-python/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
 
-<p align="center"><a href="https://circleci.com/gh/elastic/app-search-python"><img src="https://circleci.com/gh/elastic/app-search-python.svg?style=svg&circle-token=81e61cb3b81dbfdc5cb8c0cbe8cf082d94c79f96 " alt="CircleCI build"></a>
+<p align="center"><a href="https://circleci.com/gh/elastic/app-search-python"><img src="https://circleci.com/gh/elastic/app-search-python.svg" alt="CircleCI build"></a>
 
 
 > A first-party Python client for building excellent, relevant search experiences with [Elastic App Search](https://www.elastic.co/products/app-search).
