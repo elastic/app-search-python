@@ -22,7 +22,7 @@ setup(
     url=about['__url__'],
     author=about['__author__'],
     author_email=about['__author_email__'],
-    license='MIT',
+    license='Apache 2.0',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
