@@ -1,39 +1,46 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
-version: 2
+---
+
+version: 2.1
+
+executors:
+  python-27: {docker: [{image: 'python:2.7'}]}
+  python-35: {docker: [{image: 'python:3.5'}]}
+  python-36: {docker: [{image: 'python:3.6'}]}
+  python-37: {docker: [{image: 'python:3.7'}]}
+
 jobs:
   build:
-    docker:
-      - image: circleci/python:3.7.3
-
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
     working_directory: ~/repo
-
     steps:
-      - checkout
+    - checkout
+    - restore_cache:
+        keys:
+        - v1-dependencies-{{ .Environment.CIRCLE_JOB }}-{{ checksum "requirements.txt" }}
+    - run:
+        name: install dependencies
+        command: |
+          pip install virtualenv
+          virtualenv venv
+          . venv/bin/activate
+          python setup.py install
+    - save_cache:
+        paths:
+        - ./venv
+        key: v1-dependencies-{{ .Environment.CIRCLE_JOB }}-{{ checksum "requirements.txt" }}
+    - run:
+        name: run tests
+        command: |
+          . venv/bin/activate
+          python setup.py test
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run:
-          name: install dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            python setup.py install
-
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
-
-      - run:
-          name: run tests
-          command: |
-            . venv/bin/activate
-            python setup.py test
+workflows:
+  run-tests:
+    jobs:
+    - build: {name: run-tests-python-2.7, executor: python-27}
+    - build: {name: run-tests-python-3.5, executor: python-35}
+    - build: {name: run-tests-python-3.6, executor: python-36}
+    - build: {name: run-tests-python-3.7, executor: python-37}
