@@ -203,6 +203,121 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 {'deleted': True}
 ```
 
+### List all synonym sets in an engine
+
+#### With default pagination (a page size of 20)
+
+```python
+>>> client.list_synonym_sets('us-national-parks')
+{
+  'meta': {
+    'page': {
+      'current': 1,
+      'total_pages': 1,
+      'total_results': 3,
+      'size': 20
+    }
+  },
+  'results': [
+    {
+      'id': 'syn-5b11ac66c9f9292013220ad3',
+      'synonyms': [
+        'park',
+        'trail'
+      ]
+    },
+    {
+      'id': 'syn-5b11ac72c9f9296b35220ac9',
+      'synonyms': [
+        'protected',
+        'heritage'
+      ]
+    },
+    {
+      'id': 'syn-5b11ac66c9f9292013220ad3',
+      'synonyms': [
+        'hectares',
+        'acres'
+      ]
+    }
+  ]
+}
+```
+
+#### With custom pagination
+
+```python
+>>> client.list_synonym_sets('us-national-parks', size=1, current=1)
+{
+  'meta': {
+    'page': {
+      'current': 1,
+      'total_pages': 3,
+      'total_results': 3,
+      'size': 1
+    }
+  },
+  'results': [
+    {
+      'id': 'syn-5b11ac66c9f9292013220ad3',
+      'synonyms': [
+        'park',
+        'trail'
+      ]
+    }
+  ]
+}
+```
+
+### Get a single synonym set
+
+```python
+>>> client.get_synonym_set('us-national-parks', 'syn-5b11ac66c9f9292013220ad3')
+{
+  'id': 'syn-5b11ac66c9f9292013220ad3',
+  'synonyms': [
+    'park',
+    'trail'
+  ]
+}
+```
+
+### Create a synonym set
+
+```python
+>>> client.create_synonym_set('us-national-parks', ['park', 'trail'])
+{
+  'id': 'syn-5b11ac72c9f9296b35220ac9',
+  'synonyms': [
+    'park',
+    'trail'
+  ]
+}
+```
+
+### Update a synonym set
+
+```python
+>>> client.update_synonym_set('us-national-parks', 'syn-5b11ac72c9f9296b35220ac9', ['park', 'trail', 'ground'])
+{
+  'id': 'syn-5b11ac72c9f9296b35220ac9',
+  'synonyms': [
+    'park',
+    'trail',
+    'ground'
+  ]
+}
+```
+
+### Destroy a synonym set
+
+```python
+>>> client.destroy_synonym_set('us-national-parks', 'syn-5b11ac66c9f9292013220ad3')
+{
+  'deleted': True
+}
+```
+
 ### Searching
 
 ```python

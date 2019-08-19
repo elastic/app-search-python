@@ -238,6 +238,170 @@ class TestClient(TestCase):
             response = self.client.destroy_engine(engine_name)
             self.assertEqual(response, expected_return)
 
+    def test_list_synonym_sets(self):
+        expected_return = {
+            'meta': {
+                'page': {
+                    'current': 1,
+                    'total_pages': 1,
+                    'total_results': 3,
+                    'size': 20
+                }
+            },
+            'results': [
+                {
+                    'id': 'syn-5b11ac66c9f9292013220ad3',
+                    'synonyms': [
+                        'park',
+                        'trail'
+                    ]
+                },
+                {
+                    'id': 'syn-5b11ac72c9f9296b35220ac9',
+                    'synonyms': [
+                        'protected',
+                        'heritage'
+                    ]
+                },
+                {
+                    'id': 'syn-5b11ac66c9f9292013220ad3',
+                    'synonyms': [
+                        'hectares',
+                        'acres'
+                    ]
+                }
+            ]
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/synonyms".format(
+                self.client.session.base_url,
+                self.engine_name
+            )
+            m.register_uri(
+                'GET',
+                url,
+                additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.list_synonym_sets(self.engine_name)
+
+    def test_get_synonym_set(self):
+        synonym_id = 'syn-5b11ac66c9f9292013220ad3'
+        expected_return = {
+            'id': synonym_id,
+            'synonyms': [
+                'park',
+                'trail'
+            ]
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/synonyms/{}".format(
+                self.client.session.base_url,
+                self.engine_name,
+                synonym_id
+            )
+            m.register_uri(
+                'GET',
+                url,
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.get_synonym_set(
+                self.engine_name,
+                synonym_id
+            )
+            self.assertEqual(response, expected_return)
+
+    def test_create_synonym_set(self):
+        synonym_set = ['park', 'trail']
+        expected_return = {
+            'id': 'syn-5b11ac72c9f9296b35220ac9',
+            'synonyms': [
+                'park',
+                'trail'
+            ]
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/synonyms".format(
+                self.client.session.base_url,
+                self.engine_name
+            )
+            m.register_uri(
+                'POST',
+                url,
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.create_synonym_set(
+                self.engine_name,
+                synonym_set
+            )
+            self.assertEqual(response, expected_return)
+
+    def test_update_synonym_set(self):
+        synonym_id = 'syn-5b11ac72c9f9296b35220ac9'
+        synonym_set = ['park', 'trail', 'ground']
+        expected_return = {
+            'id': synonym_id,
+            'synonyms': [
+                'park',
+                'trail',
+                'ground'
+            ]
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/synonyms/{}".format(
+                self.client.session.base_url,
+                self.engine_name,
+                synonym_id
+            )
+            m.register_uri(
+                'PUT',
+                url,
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.update_synonym_set(
+                self.engine_name,
+                synonym_id,
+                synonym_set
+            )
+            self.assertEqual(response, expected_return)
+
+    def test_destroy_synonym_set(self):
+        synonym_id = 'syn-5b11ac66c9f9292013220ad3'
+        expected_return = {
+            'deleted': True
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/synonyms/{}".format(
+                self.client.session.base_url,
+                self.engine_name,
+                synonym_id
+            )
+            m.register_uri(
+                'DELETE',
+                url,
+                json=expected_return,
+                status_code=200
+            )
+
+            response = self.client.destroy_synonym_set(
+                self.engine_name,
+                synonym_id
+            )
+            self.assertEqual(response, expected_return)
+
     def test_search(self):
         query = 'query'
         expected_return = { 'meta': {}, 'results': []}
