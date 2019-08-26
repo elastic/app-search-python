@@ -2,20 +2,20 @@
 
 <p align="center"><a href="https://circleci.com/gh/elastic/app-search-python"><img src="https://circleci.com/gh/elastic/app-search-python.svg" alt="CircleCI build"></a>
 
-
 > A first-party Python client for building excellent, relevant search experiences with [Elastic App Search](https://www.elastic.co/products/app-search).
 
 ## Contents
 
-+ [Getting started](#getting-started-)
-+ [Dependencies](#dependencies)
-+ [Usage](#usage)
-+ [Running tests](#running-tests)
-+ [FAQ](#faq-)
-+ [Contribute](#contribute-)
-+ [License](#license-)
+- [Getting started](#getting-started-)
+- [Dependencies](#dependencies)
+- [Versioning](#versioning)
+- [Usage](#usage)
+- [Running tests](#running-tests)
+- [FAQ](#faq-)
+- [Contribute](#contribute-)
+- [License](#license-)
 
-***
+---
 
 ## Getting started 🐣
 
@@ -33,9 +33,19 @@ python setup.py install
 
 ## Dependencies
 
-+ Python 2.7 / Python 3.3
-+ [Requests](https://github.com/requests/requests)
-+ [PyJWT](https://github.com/jpadilla/pyjwt)
+- Python 2.7 / Python 3.3
+- [Requests](https://github.com/requests/requests)
+- [PyJWT](https://github.com/jpadilla/pyjwt)
+
+## Versioning
+
+This client is versioned and released alongside App Search.
+
+To guarantee compatibility, use the most recent version of this library within the major version of the corresponding App Search implementation.
+
+For example, for App Search `7.3`, use `7.3` of this library or above, but not `8.0`.
+
+If you are a [SaaS](https://app.swiftype.com/as) user, simply use the most recent version of this library.
 
 ## Usage
 
@@ -121,6 +131,7 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 ```
 
 ### List Documents
+
 ```python
 >>> engine_name = 'favorite-videos'
 >>> client.list_documents(engine_name, current=1, size=20)
@@ -358,7 +369,6 @@ The client can be configured to use a managed deploy by adjusting the `base_endp
 >>> client.click(engine_name, {'query': 'cat', 'document_id': 'INscMGmhmX4'})
 ```
 
-
 ### Create a Signed Search Key
 
 Creating a search key that will only search over the body field.
@@ -394,8 +404,8 @@ You can checkout the [Elastic App Search community discuss forums](https://discu
 
 We welcome contributors to the project. Before you begin, a couple notes:
 
-+ Prior to opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/elastic/app-search-python/issues).
-+ Please write simple code and concise documentation, when appropriate.
+- Prior to opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/elastic/app-search-python/issues).
+- Please write simple code and concise documentation, when appropriate.
 
 ## License 📗
 
