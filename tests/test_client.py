@@ -1,8 +1,10 @@
 from unittest import TestCase
 import requests_mock
+import json
 
 from elastic_app_search import Client
 from elastic_app_search.exceptions import InvalidDocument
+
 
 class TestClient(TestCase):
 
@@ -16,15 +18,18 @@ class TestClient(TestCase):
         )
 
     def test_deprecated_init_support_with_old_names(self):
-        self.client = Client(account_host_key='host_identifier', api_key='api_key')
+        self.client = Client(
+            account_host_key='host_identifier', api_key='api_key')
         self.assertEqual(self.client.account_host_key, 'host_identifier')
 
     def test_deprecated_init_support_with_new_names(self):
-        self.client = Client(host_identifier='host_identifier', api_key='api_key')
+        self.client = Client(
+            host_identifier='host_identifier', api_key='api_key')
         self.assertEqual(self.client.account_host_key, 'host_identifier')
 
     def test_deprecated_init_support_with_positional(self):
-        self.client = Client('host_identifier', 'api_key', 'example.com', False)
+        self.client = Client('host_identifier', 'api_key',
+                             'example.com', False)
         self.assertEqual(self.client.account_host_key, 'host_identifier')
 
     def test_host_identifier_is_optional(self):
@@ -41,7 +46,8 @@ class TestClient(TestCase):
         error = 'some processing error'
         stubbed_return = [{'id': 'something', 'errors': [error]}]
         with requests_mock.Mocker() as m:
-            m.register_uri('POST', self.document_index_url, json=stubbed_return, status_code=200)
+            m.register_uri('POST', self.document_index_url,
+                           json=stubbed_return, status_code=200)
 
             with self.assertRaises(InvalidDocument) as context:
                 self.client.index_document(self.engine_name, invalid_document)
@@ -52,14 +58,16 @@ class TestClient(TestCase):
         stubbed_return = [{'id': 'auto generated', 'errors': []}]
 
         with requests_mock.Mocker() as m:
-            m.register_uri('POST', self.document_index_url, json=stubbed_return, status_code=200)
-            response = self.client.index_document(self.engine_name, document_without_id)
+            m.register_uri('POST', self.document_index_url,
+                           json=stubbed_return, status_code=200)
+            response = self.client.index_document(
+                self.engine_name, document_without_id)
             self.assertEqual(response, {'id': 'auto generated'})
 
     def test_index_documents(self):
         id = 'INscMGmhmX4'
         valid_document = {'id': id}
-        other_document = { 'body': 'some value' }
+        other_document = {'body': 'some value'}
 
         expected_return = [
             {'id': id, 'errors': []},
@@ -67,14 +75,16 @@ class TestClient(TestCase):
         ]
 
         with requests_mock.Mocker() as m:
-            m.register_uri('POST', self.document_index_url, json=expected_return, status_code=200)
-            response = self.client.index_documents(self.engine_name, [valid_document, other_document])
+            m.register_uri('POST', self.document_index_url,
+                           json=expected_return, status_code=200)
+            response = self.client.index_documents(
+                self.engine_name, [valid_document, other_document])
             self.assertEqual(response, expected_return)
 
     def test_update_documents(self):
         id = 'INscMGmhmX4'
         valid_document = {'id': id}
-        other_document = { 'body': 'some value' }
+        other_document = {'body': 'some value'}
 
         expected_return = [
             {'id': id, 'errors': []},
@@ -82,8 +92,10 @@ class TestClient(TestCase):
         ]
 
         with requests_mock.Mocker() as m:
-            m.register_uri('PATCH', self.document_index_url, json=expected_return, status_code=200)
-            response = self.client.update_documents(self.engine_name, [valid_document, other_document])
+            m.register_uri('PATCH', self.document_index_url,
+                           json=expected_return, status_code=200)
+            response = self.client.update_documents(
+                self.engine_name, [valid_document, other_document])
             self.assertEqual(response, expected_return)
 
     def test_get_documents(self):
@@ -98,7 +110,8 @@ class TestClient(TestCase):
         ]
 
         with requests_mock.Mocker() as m:
-            m.register_uri('GET', self.document_index_url, json=expected_return, status_code=200)
+            m.register_uri('GET', self.document_index_url,
+                           json=expected_return, status_code=200)
             response = self.client.get_documents(self.engine_name, [id])
             self.assertEqual(response, expected_return)
 
@@ -113,14 +126,19 @@ class TestClient(TestCase):
             }
         }
 
+        def match_request_text(request):
+            data = json.loads(request.text)
+            return data["page"]["current"] == 1 and data["page"]["size"] == 20
+
         with requests_mock.Mocker() as m:
-            url = "{}/engines/{}/documents/list".format(self.client.session.base_url, self.engine_name)
+            url = "{}/engines/{}/documents/list".format(
+                self.client.session.base_url, self.engine_name)
             m.register_uri('GET',
-                url,
-                additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
-                json=expected_return,
-                status_code=200
-            )
+                           url,
+                           additional_matcher=match_request_text,
+                           json=expected_return,
+                           status_code=200
+                           )
 
             response = self.client.list_documents(self.engine_name)
             self.assertEqual(response, expected_return)
@@ -132,7 +150,8 @@ class TestClient(TestCase):
         ]
 
         with requests_mock.Mocker() as m:
-            m.register_uri('DELETE', self.document_index_url, json=expected_return, status_code=200)
+            m.register_uri('DELETE', self.document_index_url,
+                           json=expected_return, status_code=200)
             response = self.client.destroy_documents(self.engine_name, [id])
             self.assertEqual(response, expected_return)
 
@@ -142,12 +161,13 @@ class TestClient(TestCase):
         }
 
         with requests_mock.Mocker() as m:
-            url = "{}/engines/{}/schema".format(self.client.session.base_url, self.engine_name)
+            url = "{}/engines/{}/schema".format(
+                self.client.session.base_url, self.engine_name)
             m.register_uri('GET',
-                url,
-                json=expected_return,
-                status_code=200
-            )
+                           url,
+                           json=expected_return,
+                           status_code=200
+                           )
 
             response = self.client.get_schema(self.engine_name)
             self.assertEqual(response, expected_return)
@@ -159,29 +179,35 @@ class TestClient(TestCase):
         }
 
         with requests_mock.Mocker() as m:
-            url = "{}/engines/{}/schema".format(self.client.session.base_url, self.engine_name)
+            url = "{}/engines/{}/schema".format(
+                self.client.session.base_url, self.engine_name)
             m.register_uri('POST',
-                url,
-                json=expected_return,
-                status_code=200
-            )
+                           url,
+                           json=expected_return,
+                           status_code=200
+                           )
 
-            response = self.client.update_schema(self.engine_name, expected_return)
+            response = self.client.update_schema(
+                self.engine_name, expected_return)
             self.assertEqual(response, expected_return)
 
     def test_list_engines(self):
         expected_return = [
-            { 'name': 'myawesomeengine' }
+            {'name': 'myawesomeengine'}
         ]
+
+        def match_request_text(request):
+            data = json.loads(request.text)
+            return data["page"]["current"] == 1 and data["page"]["size"] == 20
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(self.client.session.base_url, 'engines')
             m.register_uri('GET',
-                url,
-                additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
-                json=expected_return,
-                status_code=200
-            )
+                           url,
+                           additional_matcher=match_request_text,
+                           json=expected_return,
+                           status_code=200
+                           )
             response = self.client.list_engines()
             self.assertEqual(response, expected_return)
 
@@ -190,12 +216,16 @@ class TestClient(TestCase):
             {'name': 'myawesomeengine'}
         ]
 
+        def match_request_text(request):
+            data = json.loads(request.text)
+            return data["page"]["current"] == 10 and data["page"]["size"] == 2
+
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(self.client.session.base_url, 'engines')
             m.register_uri(
                 'GET',
                 url,
-                additional_matcher=lambda x: x.text == '{"page": {"current": 10, "size": 2}}',
+                additional_matcher=match_request_text,
                 json=expected_return,
                 status_code=200
             )
@@ -205,7 +235,7 @@ class TestClient(TestCase):
     def test_get_engine(self):
         engine_name = 'myawesomeengine'
         expected_return = [
-            { 'name': engine_name }
+            {'name': engine_name}
         ]
 
         with requests_mock.Mocker() as m:
@@ -234,7 +264,8 @@ class TestClient(TestCase):
             url = "{}/{}/{}".format(self.client.session.base_url,
                                     'engines',
                                     engine_name)
-            m.register_uri('DELETE', url, json=expected_return, status_code=200)
+            m.register_uri('DELETE', url, json=expected_return,
+                           status_code=200)
             response = self.client.destroy_engine(engine_name)
             self.assertEqual(response, expected_return)
 
@@ -278,10 +309,15 @@ class TestClient(TestCase):
                 self.client.session.base_url,
                 self.engine_name
             )
+
+            def match_request_text(request):
+                data = json.loads(request.text)
+                return data["page"]["current"] == 1 and data["page"]["size"] == 20
+
             m.register_uri(
                 'GET',
                 url,
-                additional_matcher=lambda x: x.text == '{"page": {"current": 1, "size": 20}}',
+                additional_matcher=match_request_text,
                 json=expected_return,
                 status_code=200
             )
@@ -404,7 +440,7 @@ class TestClient(TestCase):
 
     def test_search(self):
         query = 'query'
-        expected_return = { 'meta': {}, 'results': []}
+        expected_return = {'meta': {}, 'results': []}
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
@@ -416,7 +452,8 @@ class TestClient(TestCase):
             self.assertEqual(response, expected_return)
 
     def test_multi_search(self):
-        expected_return = [{ 'meta': {}, 'results': []}, { 'meta': {}, 'results': []}]
+        expected_return = [{'meta': {}, 'results': []},
+                           {'meta': {}, 'results': []}]
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
@@ -429,7 +466,7 @@ class TestClient(TestCase):
 
     def test_query_suggestion(self):
         query = 'query'
-        expected_return = { 'meta': {}, 'results': {}}
+        expected_return = {'meta': {}, 'results': {}}
 
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(
@@ -437,7 +474,8 @@ class TestClient(TestCase):
                 "engines/{}/query_suggestion".format(self.engine_name)
             )
             m.register_uri('GET', url, json=expected_return, status_code=200)
-            response = self.client.query_suggestion(self.engine_name, query, {})
+            response = self.client.query_suggestion(
+                self.engine_name, query, {})
             self.assertEqual(response, expected_return)
 
     def test_click(self):
@@ -447,4 +485,5 @@ class TestClient(TestCase):
                 "engines/{}/click".format(self.engine_name)
             )
             m.register_uri('POST', url, json={}, status_code=200)
-            self.client.click(self.engine_name, {'query': 'cat', 'document_id': 'INscMGmhmX4'})
+            self.client.click(self.engine_name, {
+                              'query': 'cat', 'document_id': 'INscMGmhmX4'})

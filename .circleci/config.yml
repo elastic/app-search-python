@@ -1,12 +1,11 @@
 ---
-
 version: 2.1
 
 executors:
-  python-27: {docker: [{image: 'python:2.7'}]}
-  python-35: {docker: [{image: 'python:3.5'}]}
-  python-36: {docker: [{image: 'python:3.6'}]}
-  python-37: {docker: [{image: 'python:3.7'}]}
+  python-27: { docker: [{ image: "python:2.7.16" }] }
+  python-35: { docker: [{ image: "python:3.5.7" }] }
+  python-36: { docker: [{ image: "python:3.6.9" }] }
+  python-37: { docker: [{ image: "python:3.7.4" }] }
 
 jobs:
   build:
@@ -16,31 +15,31 @@ jobs:
     executor: << parameters.executor >>
     working_directory: ~/repo
     steps:
-    - checkout
-    - restore_cache:
-        keys:
-        - v1-dependencies-{{ .Environment.CIRCLE_JOB }}-{{ checksum "requirements.txt" }}
-    - run:
-        name: install dependencies
-        command: |
-          pip install virtualenv
-          virtualenv venv
-          . venv/bin/activate
-          python setup.py install
-    - save_cache:
-        paths:
-        - ./venv
-        key: v1-dependencies-{{ .Environment.CIRCLE_JOB }}-{{ checksum "requirements.txt" }}
-    - run:
-        name: run tests
-        command: |
-          . venv/bin/activate
-          python setup.py test
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ .Environment.CIRCLE_JOB }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: install dependencies
+          command: |
+            pip install virtualenv
+            virtualenv venv
+            . venv/bin/activate
+            python setup.py install
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ .Environment.CIRCLE_JOB }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            python setup.py test
 
 workflows:
   run-tests:
     jobs:
-    - build: {name: run-tests-python-2.7, executor: python-27}
-    - build: {name: run-tests-python-3.5, executor: python-35}
-    - build: {name: run-tests-python-3.6, executor: python-36}
-    - build: {name: run-tests-python-3.7, executor: python-37}
+      - build: { name: run-tests-python-2.7, executor: python-27 }
+      - build: { name: run-tests-python-3.5, executor: python-35 }
+      - build: { name: run-tests-python-3.6, executor: python-36 }
+      - build: { name: run-tests-python-3.7, executor: python-37 }
