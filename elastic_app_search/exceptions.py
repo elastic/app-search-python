@@ -15,6 +15,9 @@ class RecordAlreadyExists(ElasticAppSearchError):
 class BadRequest(ElasticAppSearchError):
     """Raised when bad request"""
 
+    def __init__(self, message):
+        super(ElasticAppSearchError, self).__init__(message)
+
 class Forbidden(ElasticAppSearchError):
     """Raised when http forbidden"""
 

@@ -22,7 +22,7 @@ class RequestSession:
         if response.status_code == requests.codes.unauthorized:
             raise InvalidCredentials(response.reason)
         elif response.status_code == requests.codes.bad:
-            raise BadRequest()
+            raise BadRequest(response.text)
         elif response.status_code == requests.codes.conflict:
             raise RecordAlreadyExists()
         elif response.status_code == requests.codes.not_found:

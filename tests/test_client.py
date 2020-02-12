@@ -253,7 +253,29 @@ class TestClient(TestCase):
         with requests_mock.Mocker() as m:
             url = "{}/{}".format(self.client.session.base_url, 'engines')
             m.register_uri('POST', url, json=expected_return, status_code=200)
-            response = self.client.create_engine(engine_name, 'en')
+            response = self.client.create_engine(
+                engine_name=engine_name, language='en')
+            self.assertEqual(response, expected_return)
+
+    def test_create_engine_with_options(self):
+        engine_name = 'myawesomeengine'
+        expected_return = {'name': engine_name, 'type': 'meta',
+                           'source_engines': [
+                               'source-engine-1',
+                               'source-engine-2'
+                           ]}
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(self.client.session.base_url, 'engines')
+            m.register_uri('POST', url, json=expected_return, status_code=200)
+            response = self.client.create_engine(
+                engine_name=engine_name, options={
+                    'type': 'meta',
+                    'source_engines': [
+                        'source-engine-1',
+                        'source-engine-2'
+                    ]
+                })
             self.assertEqual(response, expected_return)
 
     def test_destroy_engine(self):
@@ -487,3 +509,34 @@ class TestClient(TestCase):
             m.register_uri('POST', url, json={}, status_code=200)
             self.client.click(self.engine_name, {
                               'query': 'cat', 'document_id': 'INscMGmhmX4'})
+
+    def test_add_source_engines(self):
+        target_source_engine_name = 'source-engine-3'
+        expected_return = {'source_engines': [
+            'source-engine-1', 'source-engine-2', target_source_engine_name], 'type': 'meta', 'name': self.engine_name}
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(
+                self.client.session.base_url,
+                "engines/{}/source_engines".format(self.engine_name)
+            )
+            m.register_uri('POST', url, json=expected_return, status_code=200)
+            response = self.client.add_source_engines(
+                self.engine_name, [target_source_engine_name])
+            self.assertEqual(response, expected_return)
+
+    def test_remove_source_engines(self):
+        source_engine_name = 'source-engine-3'
+        expected_return = {'source_engines': [
+            'source-engine-1', 'source-engine-2'], 'type': 'meta', 'name': self.engine_name}
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(
+                self.client.session.base_url,
+                "engines/{}/source_engines".format(self.engine_name)
+            )
+            m.register_uri('DELETE', url, json=expected_return,
+                           status_code=200)
+            response = self.client.remove_source_engines(
+                self.engine_name, [source_engine_name])
+            self.assertEqual(response, expected_return)

@@ -149,16 +149,19 @@ class Client:
         """
         return self.session.request('get', "engines/{}".format(engine_name))
 
-    def create_engine(self, engine_name, language=None):
+    def create_engine(self, engine_name, language=None, options=None):
         """
         Creates an engine with the specified name.
         :param engine_name: Name of the new engine.
         :param language: Language of the new engine.
+        :param options: Engine configuration.
         :return: A dictionary corresponding to the new engine.
         """
         data = { 'name': engine_name }
         if language is not None:
             data['language'] = language
+        if options is not None:
+            data.update(options)
         return self.session.request('post', 'engines', json=data)
 
     def destroy_engine(self, engine_name):
@@ -289,6 +292,13 @@ class Client:
         endpoint = "engines/{}/click".format(engine_name)
         return self.session.request_ignore_response('post', endpoint, json=options)
 
+    def add_source_engines(self, engine_name, source_engines):
+        endpoint = "engines/{}/source_engines".format(engine_name)
+        return self.session.request('post', endpoint, json=source_engines)
+
+    def remove_source_engines(self, engine_name, source_engines):
+        endpoint = "engines/{}/source_engines".format(engine_name)
+        return self.session.request('delete', endpoint, json=source_engines)
 
     @staticmethod
     def create_signed_search_key(api_key, api_key_name, options):
