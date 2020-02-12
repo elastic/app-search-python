@@ -45,11 +45,35 @@ To guarantee compatibility, use the most recent version of this library within t
 
 For example, for App Search `7.3`, use `7.3` of this library or above, but not `8.0`.
 
-If you are a [SaaS](https://app.swiftype.com/as) user, simply use the most recent version of this library.
+If you are using the [SaaS version available on swiftype.com](https://app.swiftype.com/as) of App Search, you should use the version 7.5.x of the client.
 
 ## Usage
 
 ### Instantiating a client
+
+Using this client assumes that you have already an instance of [Elastic App Search](https://www.elastic.co/products/app-search) up and running.
+
+The client can be instantiated using the `base_endpoint`, `api_key` and `use_https` parameters:
+
+```python
+>>> from elastic_app_search import Client
+>>> client = Client(
+    base_endpoint='localhost:3002/api/as/v1',
+    api_key='private-mu75psc5egt9ppzuycnc2mc3',
+    use_https=False
+)
+```
+
+Note:
+
+The `[api_key]` authenticates requests to the API.
+You can use any key type with the client, however each has a different scope.
+For more information on keys, check out the [documentation](https://swiftype.com/documentation/app-search/credentials).
+
+#### Swiftype.com App Search users:
+
+When using the [SaaS version available on swiftype.com](https://app.swiftype.com/as) of App Search, you can configure the client using your `host_identifier` instead of the `base_endpoint` parameter.
+The `host_identifier` can be found within the [Credentials](https://app.swiftype.com/ascredentials) menu.
 
 ```python
 >>> from elastic_app_search import Client
@@ -58,18 +82,6 @@ If you are a [SaaS](https://app.swiftype.com/as) user, simply use the most recen
 >>> client = Client(host_identifier, api_key)
 ```
 
-### Using with App Search Managed Deploys
-
-The client can be configured to use a managed deploy by adjusting the `base_endpoint` and `use_https` parameters. Since managed deploys do not rely on a `host_identifier`, it can be omitted.
-
-```python
->>> from elastic_app_search import Client
->>> client = Client(
-    api_key='private-mu75psc5egt9ppzuycnc2mc3',
-    base_endpoint='localhost:3002/api/as/v1',
-    use_https=False
-)
-```
 
 ### Indexing: Creating or Updating a Single Document
 
