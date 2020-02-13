@@ -292,11 +292,19 @@ class Client:
         endpoint = "engines/{}/click".format(engine_name)
         return self.session.request_ignore_response('post', endpoint, json=options)
 
-    def add_source_engines(self, engine_name, source_engines):
+    def create_meta_engine(self, engine_name, source_engines):
+        data = {
+            'name': engine_name,
+            'source_engines': source_engines,
+            'type': 'meta'
+        }
+        return self.session.request('post', 'engines', json=data)
+
+    def add_meta_engine_sources(self, engine_name, source_engines):
         endpoint = "engines/{}/source_engines".format(engine_name)
         return self.session.request('post', endpoint, json=source_engines)
 
-    def remove_source_engines(self, engine_name, source_engines):
+    def delete_meta_engine_sources(self, engine_name, source_engines):
         endpoint = "engines/{}/source_engines".format(engine_name)
         return self.session.request('delete', endpoint, json=source_engines)
 

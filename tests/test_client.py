@@ -510,7 +510,19 @@ class TestClient(TestCase):
             self.client.click(self.engine_name, {
                               'query': 'cat', 'document_id': 'INscMGmhmX4'})
 
-    def test_add_source_engines(self):
+    def test_create_meta_engine(self):
+        source_engines = ['source-engine-1', 'source-engine-2']
+        expected_return = {'source_engines': source_engines,
+                           'type': 'meta', 'name': self.engine_name}
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(self.client.session.base_url, 'engines')
+            m.register_uri('POST', url, json=expected_return, status_code=200)
+            response = self.client.create_meta_engine(
+                self.engine_name, source_engines)
+            self.assertEqual(response, expected_return)
+
+    def test_add_meta_engine_sources(self):
         target_source_engine_name = 'source-engine-3'
         expected_return = {'source_engines': [
             'source-engine-1', 'source-engine-2', target_source_engine_name], 'type': 'meta', 'name': self.engine_name}
@@ -521,11 +533,11 @@ class TestClient(TestCase):
                 "engines/{}/source_engines".format(self.engine_name)
             )
             m.register_uri('POST', url, json=expected_return, status_code=200)
-            response = self.client.add_source_engines(
+            response = self.client.add_meta_engine_sources(
                 self.engine_name, [target_source_engine_name])
             self.assertEqual(response, expected_return)
 
-    def test_remove_source_engines(self):
+    def test_delete_meta_engine_sources(self):
         source_engine_name = 'source-engine-3'
         expected_return = {'source_engines': [
             'source-engine-1', 'source-engine-2'], 'type': 'meta', 'name': self.engine_name}
@@ -537,6 +549,6 @@ class TestClient(TestCase):
             )
             m.register_uri('DELETE', url, json=expected_return,
                            status_code=200)
-            response = self.client.remove_source_engines(
+            response = self.client.delete_meta_engine_sources(
                 self.engine_name, [source_engine_name])
             self.assertEqual(response, expected_return)

@@ -395,27 +395,27 @@ Creating a search key that will only search over the body field.
 ### Create a Meta Engine
 
 ```python
->>> client.create_engine('my-meta-engine', options={
-  'type': 'meta',
-  'source_engines': [
-    'source-engine-1',
-    'source-engine-2'
-  ]
-})
+>>> client.create_meta_engine(
+    engine_name=engine_name,
+    source_engines=[
+        'source-engine-1',
+        'source-engine-2'
+    ]
+)
 {'source_engines': ['source-engine-1', 'source-engine-2'], 'type': 'meta', 'name': 'my-meta-engine'}
 ```
 
 ### Add a Source Engine to a Meta Engine
 
 ```python
->>> client.add_source_engines('my-meta-engine', ['source-engine-3'])
+>>> client.add_meta_engine_sources('my-meta-engine', ['source-engine-3'])
 {'source_engines': ['source-engine-1', 'source-engine-2', 'source-engine-3'], 'type': 'meta', 'name': 'my-meta-engine'}
 ```
 
 ### Remove a Source Engine from a Meta Engine
 
 ```python
->>> client.remove_source_engines('my-meta-engine', ['source-engine-3'])
+>>> client.delete_meta_engine_sources('my-meta-engine', ['source-engine-3'])
 {'source_engines': ['source-engine-1', 'source-engine-2'], 'type': 'meta', 'name': 'my-meta-engine'}
 ```
 
