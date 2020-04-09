@@ -68,12 +68,12 @@ Note:
 
 The `[api_key]` authenticates requests to the API.
 You can use any key type with the client, however each has a different scope.
-For more information on keys, check out the [documentation](https://swiftype.com/documentation/app-search/credentials).
+For more information on keys, check out the [documentation](https://swiftype.com/documentation/app-search/api/credentials).
 
 #### Swiftype.com App Search users:
 
 When using the [SaaS version available on swiftype.com](https://app.swiftype.com/as) of App Search, you can configure the client using your `host_identifier` instead of the `base_endpoint` parameter.
-The `host_identifier` can be found within the [Credentials](https://app.swiftype.com/ascredentials) menu.
+The `host_identifier` can be found within the [Credentials](https://app.swiftype.com/as#/credentials) menu.
 
 ```python
 >>> from elastic_app_search import Client
@@ -389,7 +389,11 @@ Creating a search key that will only search over the body field.
 >>> api_key = 'private-mu75psc5egt9ppzuycnc2mc3'
 >>> api_key_name = 'my-api-token'
 >>> signed_search_key = Client.create_signed_search_key(api_key, api_key_name, {'search_fields': { 'body': {}}})
->>> client = Client(host_identifier, signed_search_key)
+>>> client = Client(
+    base_endpoint='localhost:3002/api/as/v1',
+    api_key=signed_search_key,
+    use_https=False
+)
 ```
 
 ### Create a Meta Engine
