@@ -64,11 +64,26 @@ The client can be instantiated using the `base_endpoint`, `api_key` and `use_htt
 )
 ```
 
-Note:
+Notes:
 
 The `[api_key]` authenticates requests to the API.
 You can use any key type with the client, however each has a different scope.
 For more information on keys, check out the [documentation](https://swiftype.com/documentation/app-search/api/credentials).
+
+The `base_endpoint` must exclude the protocol and include the `api/as/v1` prefix. This can typically be found in the Credentials tab within the App Search Dashboard.
+
+Set `use_https` to `True` or `False` depending how your server is configured. Often times it will be `False` when running in development on `localhost` and `True` for production environments.
+
+The following is example of a configuration for Elastic Cloud:
+
+```python
+>>> from elastic_app_search import Client
+>>> client = Client(
+    base_endpoint='77bf13bc2e9948729af339a446b06ddcc.app-search.us-east-1.aws.found.io/api/as/v1',
+    api_key='private-mu75psc5egt9ppzuycnc2mc3',
+    use_https=True
+)
+```
 
 #### Swiftype.com App Search users:
 
