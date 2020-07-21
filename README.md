@@ -472,6 +472,7 @@ Creating a search key that will only search over the body field.
     "search_fields": {
       "name": {
         "weight": 2
+      },
       "description": {
         "weight": 1
       }
@@ -491,6 +492,7 @@ Creating a search key that will only search over the body field.
   "search_fields": {
     "name": {
       "weight": 2
+    },
     "description": {
       "weight": 1
     }
@@ -515,6 +517,7 @@ Creating a search key that will only search over the body field.
   "search_fields": {
     "name": {
       "weight": 1
+    },
     "description": {
       "weight": 1
     }
