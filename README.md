@@ -438,6 +438,91 @@ Creating a search key that will only search over the body field.
 {'source_engines': ['source-engine-1', 'source-engine-2'], 'type': 'meta', 'name': 'my-meta-engine'}
 ```
 
+### Get search settings
+
+```python
+>>> client.get_search_settings(engine_name='us-national-parks')
+{
+  "search_fields": {
+    "name": {
+      "weight": 1
+    },
+    "description": {
+      "weight": 1
+    }
+  },
+  "result_fields": {
+    "name": {
+      "raw": {}
+    },
+    "description": {
+      "raw": {}
+    }
+  },
+  "boosts": {}
+}
+```
+
+### Update search settings
+
+```python
+>>> client.update_search_settings(
+  engine_name='us-national-parks',
+  search_settings={
+    "search_fields": {
+      "name": {
+        "weight": 2
+      "description": {
+        "weight": 1
+      }
+    },
+    "result_fields": {
+      "name": {
+        "raw": {}
+      },
+      "description": {
+        "raw": {}
+      }
+    },
+    "boosts": {}
+  }
+)
+{
+  "search_fields": {
+    "name": {
+      "weight": 2
+    "description": {
+      "weight": 1
+    }
+  },
+  "result_fields": {
+    "name": {
+      "raw": {}
+    },
+    "description": {
+      "raw": {}
+    }
+  },
+  "boosts": {}
+}
+```
+
+### Reset search settings
+
+```python
+>>> client.reset_search_settings(engine_name='us-national-parks')
+{
+  "search_fields": {
+    "name": {
+      "weight": 1
+    "description": {
+      "weight": 1
+    }
+  },
+  "boosts": {}
+}
+```
+
 ## Running tests
 
 ```python

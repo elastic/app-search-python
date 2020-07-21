@@ -552,3 +552,98 @@ class TestClient(TestCase):
             response = self.client.delete_meta_engine_sources(
                 self.engine_name, [source_engine_name])
             self.assertEqual(response, expected_return)
+
+    def test_get_search_settings(self):
+        expected_return = {
+            "search_fields": {
+                "name": {
+                    "weight": 1
+                },
+                "description": {
+                    "weight": 1
+                }
+            },
+            "result_fields": {
+                "name": {
+                    "raw": {}
+                },
+                "description": {
+                    "raw": {}
+                }
+            },
+            "boosts": {}
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/search_settings".format(
+                self.client.session.base_url,
+                self.engine_name
+            )
+            m.register_uri('GET', url, json=expected_return, status_code=200)
+            response = self.client.get_search_settings(self.engine_name)
+            self.assertEqual(response, expected_return)
+
+    def test_update_search_settings(self):
+        expected_return = {
+            "search_fields": {
+                "name": {
+                    "weight": 2
+                },
+                "description": {
+                    "weight": 1
+                }
+            },
+            "result_fields": {
+                "name": {
+                    "raw": {}
+                },
+                "description": {
+                    "raw": {}
+                }
+            },
+            "boosts": {}
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/search_settings".format(
+                self.client.session.base_url,
+                self.engine_name
+            )
+            m.register_uri('PUT', url, json=expected_return, status_code=200)
+            response = self.client.update_search_settings(
+                engine_name=self.engine_name,
+                search_settings=expected_return
+            )
+            self.assertEqual(response, expected_return)
+
+    def test_reset_search_settings(self):
+        expected_return = {
+            "search_fields": {
+                "name": {
+                    "weight": 1
+                },
+                "description": {
+                    "weight": 1
+                }
+            },
+            "result_fields": {
+                "name": {
+                    "raw": {}
+                },
+                "description": {
+                    "raw": {}
+                }
+            },
+            "boosts": {}
+        }
+
+        with requests_mock.Mocker() as m:
+            url = "{}/engines/{}/search_settings/reset".format(
+                self.client.session.base_url,
+                self.engine_name
+            )
+            m.register_uri('POST', url, json=expected_return, status_code=200)
+            response = self.client.reset_search_settings(
+                engine_name=self.engine_name
+            )
+            self.assertEqual(response, expected_return)

@@ -308,6 +308,34 @@ class Client:
         endpoint = "engines/{}/source_engines".format(engine_name)
         return self.session.request('delete', endpoint, json=source_engines)
 
+    def get_search_settings(self, engine_name):
+        """
+        Get search settings for an engine.
+
+        :param engine_name: Name of the engine.
+        """
+        endpoint = "engines/{}/search_settings".format(engine_name)
+        return self.session.request('get', endpoint)
+
+    def update_search_settings(self, engine_name, search_settings):
+        """
+        Update search settings for an engine.
+
+        :param engine_name: Name of the engine.
+        :param search_settings: New search settings JSON
+        """
+        endpoint = "engines/{}/search_settings".format(engine_name)
+        return self.session.request('put', endpoint, json=search_settings)
+
+    def reset_search_settings(self, engine_name):
+        """
+        Reset search settings to default for the given engine.
+
+        :param engine_name: Name of the engine.
+        """
+        endpoint = "engines/{}/search_settings/reset".format(engine_name)
+        return self.session.request('post', endpoint)
+
     @staticmethod
     def create_signed_search_key(api_key, api_key_name, options):
         """
