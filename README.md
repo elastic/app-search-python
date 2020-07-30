@@ -447,7 +447,7 @@ Creating a search key that will only search over the body field.
       "from": "2020-03-30T00:00:00+00:00",
       "to": "2020-03-31T00:00:00+00:00"
     },
-    "status": "429",
+    "status": "429"
   }
 })
 {
