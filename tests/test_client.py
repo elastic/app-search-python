@@ -553,6 +553,18 @@ class TestClient(TestCase):
                 self.engine_name, [source_engine_name])
             self.assertEqual(response, expected_return)
 
+    def test_get_api_logs(self):
+        expected_return = {'meta': {}, 'results': []}
+
+        with requests_mock.Mocker() as m:
+            url = "{}/{}".format(
+                self.client.session.base_url,
+                "engines/{}/logs/api".format(self.engine_name)
+            )
+            m.register_uri('GET', url, json=expected_return, status_code=200)
+            response = self.client.get_api_logs(self.engine_name, options={})
+            self.assertEqual(response, expected_return)
+
     def test_get_search_settings(self):
         expected_return = {
             "search_fields": {

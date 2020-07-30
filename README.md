@@ -438,6 +438,40 @@ Creating a search key that will only search over the body field.
 {'source_engines': ['source-engine-1', 'source-engine-2'], 'type': 'meta', 'name': 'my-meta-engine'}
 ```
 
+### Search the API logs
+
+```python
+>>> client.get_api_logs('my-meta-engine', {
+  "filters": {
+    "date": {
+      "from": "2020-03-30T00:00:00+00:00",
+      "to": "2020-03-31T00:00:00+00:00"
+    },
+    "status": "429",
+  }
+})
+{
+    'results': [],
+    'meta': {
+        'query': '',
+        'filters': {
+            'date': {
+                'from': '2020-03-27T00:00:00+00:00',
+                'to': '2020-03-31T00:00:00+00:00'
+            },
+            'status': '429'
+        },
+        'sort_direction': 'asc',
+        'page': {
+            'current': 1,
+            'total_pages': 0,
+            'total_results': 0,
+            'size': 10
+        }
+    }
+}
+```
+
 ### Get search settings
 
 ```python

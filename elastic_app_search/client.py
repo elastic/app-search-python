@@ -349,3 +349,15 @@ class Client:
         """
         options['api_key_name'] = api_key_name
         return jwt.encode(options, api_key, algorithm=Client.SIGNED_SEARCH_TOKEN_JWT_ALGORITHM)
+
+    def get_api_logs(self, engine_name, options=None):
+        """
+        Searches the API logs.
+
+        :param engine_name: Name of engine.
+        :param options: Dict of search options.
+        """
+        endpoint = "engines/{}/logs/api".format(engine_name)
+        options = options or {}
+        return self.session.request('get', endpoint, json=options)
+
