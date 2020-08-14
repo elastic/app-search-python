@@ -401,8 +401,8 @@ The `host_identifier` can be found within the [Credentials](https://app.swiftype
 Creating a search key that will only search over the body field.
 
 ```python
->>> api_key = 'private-mu75psc5egt9ppzuycnc2mc3'
->>> api_key_name = 'my-api-token'
+>>> api_key = 'search-xxxxxxxxxxxxxxxxxxxxxxxx'
+>>> api_key_name = 'search-key' # This name must match the name of the search key above from your App Search dashboard
 >>> signed_search_key = Client.create_signed_search_key(api_key, api_key_name, {'search_fields': { 'body': {}}})
 >>> client = Client(
     base_endpoint='localhost:3002/api/as/v1',
