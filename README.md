@@ -1,3 +1,14 @@
+> **⚠️ This client is deprecated ⚠️**
+>
+> As of Enterprise Search version 7.10.0, we are directing users to the new [Enterprise Search Python Client](https://github.com/elastic/enterprise-search-python) and
+> deprecating this client.
+>
+> This client will be compatible with all Enterprise Search 7.x releases, but will not be compatible with 8.x releases. Our development effort on this project will
+> be limited to bug fixes. All future enhancements will be focused on the Enterprise Search Ruby Client.
+>
+> Thank you! - Elastic
+
+
 <p align="center"><img src="https://github.com/elastic/app-search-python/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
 
 <p align="center"><a href="https://circleci.com/gh/elastic/app-search-python"><img src="https://circleci.com/gh/elastic/app-search-python.svg" alt="CircleCI build"></a>
