@@ -4,7 +4,7 @@
 > deprecating this client.
 >
 > This client will be compatible with all Enterprise Search 7.x releases, but will not be compatible with 8.x releases. Our development effort on this project will
-> be limited to bug fixes. All future enhancements will be focused on the Enterprise Search Ruby Client.
+> be limited to bug fixes. All future enhancements will be focused on the Enterprise Search Python Client.
 >
 > Thank you! - Elastic
 
