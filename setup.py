@@ -38,7 +38,7 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
         'requests',
-        'PyJWT'
+        'PyJWT<=1.7.1'
     ],
     tests_require=[
         'requests_mock',
